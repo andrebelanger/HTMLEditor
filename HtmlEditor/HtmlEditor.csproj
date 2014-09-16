@@ -53,7 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Editor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -64,8 +64,8 @@
     <Compile Include="Editor\Buffer.cs" />
     <Compile Include="HtmlParser\Construct.cs" />
     <Compile Include="HtmlParser\Field.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Editor.xaml.cs">
+      <DependentUpon>Editor.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
