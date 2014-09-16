@@ -6,18 +6,8 @@ using System.Threading.Tasks;
 
 namespace HtmlEditor
 {
-    class Field
+    public class Field
     {
-
-        public Field()
-        {
-
-        }
-
-        void auto_complete()
-        {
-
-        }
 
     }
 }

@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace HtmlEditor
 {
-    class Construct
+    public class Construct
     {
-
-        public Construct()
-        {
-
-        }
 
     }
 }

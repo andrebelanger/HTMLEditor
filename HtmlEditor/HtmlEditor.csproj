@@ -63,7 +63,6 @@
     </Compile>
     <Compile Include="Editor\Buffer.cs" />
     <Compile Include="HtmlParser\Construct.cs" />
-    <Compile Include="Editor\Editor.cs" />
     <Compile Include="HtmlParser\Field.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
