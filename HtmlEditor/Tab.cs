@@ -8,5 +8,11 @@ namespace HtmlEditor
 {
     class Tab
     {
+
+        public Tab()
+        {
+
+        }
+
     }
 }

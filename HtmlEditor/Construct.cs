@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace HtmlEditor
 {
-    class Construct
+    class Construct : Field
     {
+
+        public Construct()
+        {
+
+        }
+
     }
 }

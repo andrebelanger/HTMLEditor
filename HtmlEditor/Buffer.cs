@@ -8,5 +8,26 @@ namespace HtmlEditor
 {
     class Buffer
     {
+
+        public Buffer()
+        {
+
+        }
+
+        void insert()
+        {
+
+        }
+
+        void auto_complete()
+        {
+
+        }
+
+        void word_wrap()
+        {
+
+        }
+
     }
 }

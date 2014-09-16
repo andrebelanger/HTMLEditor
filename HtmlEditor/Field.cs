@@ -8,5 +8,16 @@ namespace HtmlEditor
 {
     class Field
     {
+
+        public Field()
+        {
+
+        }
+
+        void auto_complete()
+        {
+
+        }
+
     }
 }

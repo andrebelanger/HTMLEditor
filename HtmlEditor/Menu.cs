@@ -8,5 +8,11 @@ namespace HtmlEditor
 {
     class Menu
     {
+
+        public Menu()
+        {
+
+        }
+
     }
 }

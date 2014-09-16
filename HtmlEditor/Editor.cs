@@ -8,5 +8,36 @@ namespace HtmlEditor
 {
     class Editor
     {
+
+        public Editor()
+        {
+
+        }
+
+        void verify()
+        {
+
+        }
+
+        void alert()
+        {
+
+        }
+
+        void terminate()
+        {
+
+        }
+
+        void save()
+        {
+
+        }
+
+        void open()
+        {
+
+        }
+
     }
 }
