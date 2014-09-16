@@ -61,7 +61,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Editor\Buffer.cs" />
+    <Compile Include="Buffer.cs" />
     <Compile Include="HtmlParser\Construct.cs" />
     <Compile Include="HtmlParser\Field.cs" />
     <Compile Include="Editor.xaml.cs">
