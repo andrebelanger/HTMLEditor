@@ -6,24 +6,13 @@ using System.Threading.Tasks;
 
 namespace HtmlEditor
 {
-    class Menu
+    class HTML_File
     {
 
-        public Menu()
-        {
-        }
-
-        int get_font_size()
-        {
-            return 0;
-        }
-
-        void set_font_size()
+        public HTML_File()
         {
 
         }
-
-
 
     }
 }

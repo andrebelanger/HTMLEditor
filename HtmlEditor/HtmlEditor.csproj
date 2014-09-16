@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HTML_File.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Tab.cs" />
     <Compile Include="Validator.cs" />
