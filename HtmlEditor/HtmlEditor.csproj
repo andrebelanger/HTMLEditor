@@ -53,10 +53,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="HTML_File.cs" />
-    <Compile Include="Menu.cs" />
-    <Compile Include="Tab.cs" />
-    <Compile Include="Validator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -65,10 +61,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Buffer.cs" />
-    <Compile Include="Construct.cs" />
-    <Compile Include="Editor.cs" />
-    <Compile Include="Field.cs" />
+    <Compile Include="Editor\Buffer.cs" />
+    <Compile Include="HtmlParser\Construct.cs" />
+    <Compile Include="Editor\Editor.cs" />
+    <Compile Include="HtmlParser\Field.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
