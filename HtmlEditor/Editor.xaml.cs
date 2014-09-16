@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace HtmlEditor
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for Editor.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class Editor : Window
 	{
-		public MainWindow()
+		public Editor()
 		{
 			InitializeComponent();
 		}
