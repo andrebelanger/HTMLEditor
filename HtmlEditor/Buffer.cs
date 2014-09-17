@@ -23,6 +23,14 @@ namespace HtmlEditor
 		public IList<string> Lines { get; private set; }
 
 		/// <summary>
+		/// Gets or sets the filename the buffer is associated with.
+		/// </summary>
+		/// <value>
+		/// The filename.
+		/// </value>
+		public string Filename { get; set; }
+
+		/// <summary>
 		/// Initializes a new empty instance of the <see cref="Buffer"/> class.
 		/// </summary>
 		public Buffer()
@@ -56,6 +64,18 @@ namespace HtmlEditor
 		}
 
 		/// <summary>
+		/// Saves this buffer by calling the <see cref="Save(string)"/> method with the set filename.
+		/// </summary>
+		/// <exception cref="System.InvalidOperationException">Filename must be set</exception>
+		public void Save()
+		{
+			if (Filename == null)
+				throw new InvalidOperationException("Filename must be set");
+
+			Save(Filename);
+		}
+
+		/// <summary>
 		/// Creates a new buffer from the contents of the specified file.
 		/// </summary>
 		/// <remarks>
@@ -67,7 +87,7 @@ namespace HtmlEditor
 		/// <returns>The constructed buffer.</returns>
 		public static Buffer Load(string filename)
 		{
-			return new Buffer(File.ReadAllLines(filename));
+			return new Buffer(File.ReadAllLines(filename)) {Filename = filename};
 		}
     }
 }
