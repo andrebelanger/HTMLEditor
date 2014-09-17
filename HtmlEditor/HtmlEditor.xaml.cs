@@ -17,11 +17,11 @@ using Microsoft.Win32;
 namespace HtmlEditor
 {
 	/// <summary>
-	/// Interaction logic for Editor.xaml
+	/// Interaction logic for HtmlEditor.xaml
 	/// </summary>
-	public partial class Editor : Window
+	public partial class HtmlEditor : Window
 	{
-		public Editor()
+		public HtmlEditor()
 		{
 			InitializeComponent();
 		}
