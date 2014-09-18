@@ -64,6 +64,7 @@
     <Compile Include="Buffer.cs" />
     <Compile Include="CodeEditor.cs" />
     <Compile Include="SyntaxHighlighters\CowSyntaxHighlighter.cs" />
+    <Compile Include="SyntaxHighlighters\HTMLSyntaxHighlighter.cs" />
     <Compile Include="SyntaxHighlighters\ISyntaxHighlighter.cs" />
     <Compile Include="SyntaxHighlighters\RawSyntaxHighlighter.cs" />
     <Compile Include="HtmlParser\Construct.cs" />

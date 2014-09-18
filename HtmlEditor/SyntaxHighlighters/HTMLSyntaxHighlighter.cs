@@ -33,7 +33,7 @@ namespace HtmlEditor.SyntaxHighlighters
                 {
                     elementFlag = false;
                     ret.Inlines.Add(new Span(new Run(text[i].ToString()) { Foreground = BlueBrush }));
-                    break;
+                    continue;
                 }
                     
 
