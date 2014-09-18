@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HtmlEditor.SyntaxHighlighters;
 using Microsoft.Win32;
 
 namespace HtmlEditor
@@ -98,7 +99,13 @@ namespace HtmlEditor
 		private void OpenExample(object sender, RoutedEventArgs e)
 		{
 			foreach (var b in OpenBuffers())
-				MessageBox.Show("Opened buffer " + b.Filename);
+			{
+				var ce = new CodeEditor(b, new CowSyntaxHighlighter());
+				var tab = new TabItem {Header = System.IO.Path.GetFileName(b.Filename), Content = ce};
+				CodeEditors.SelectedIndex = CodeEditors.Items.Add(tab);
+				tab.Focus();
+				ce.Focus();
+			}
 		}
 	}
 }

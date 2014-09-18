@@ -10,10 +10,7 @@
 				<MenuItem Header="Save _As" />
 			</MenuItem>
 		</Menu>
-		<TabControl>
-			<TabItem Header="Tab 1">
-				<RichTextBox />
-			</TabItem>
+		<TabControl x:Name="CodeEditors">
 		</TabControl>
 	</DockPanel>
 </Window>
