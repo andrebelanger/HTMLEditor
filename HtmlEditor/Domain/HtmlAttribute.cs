@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HtmlEditor.HtmlParser
+namespace HtmlEditor.Domain
 {
-    public class Construct
+    public class HtmlAttribute
     {
-
     }
 }

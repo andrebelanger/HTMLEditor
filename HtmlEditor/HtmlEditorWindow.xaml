@@ -9,7 +9,14 @@
 				<MenuItem Header="_Save" />
 				<MenuItem Header="Save _As" />
 			</MenuItem>
-		</Menu>
+            <MenuItem Header="_Edit" Click="OpenExample">
+                <MenuItem Header="_Add..." >
+                    <MenuItem Header="_Table" />
+                </MenuItem>
+                <MenuItem Header="_Bold" />
+                <MenuItem Header="_Italic" />
+            </MenuItem>
+        </Menu>
 		<TabControl x:Name="CodeEditors">
 		</TabControl>
 	</DockPanel>

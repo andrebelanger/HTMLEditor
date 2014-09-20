@@ -63,12 +63,16 @@
     </Compile>
     <Compile Include="Buffer.cs" />
     <Compile Include="CodeEditor.cs" />
+    <Compile Include="HtmlParser\HtmlAttribute.cs" />
+    <Compile Include="HtmlParser\HtmlComment.cs" />
+    <Compile Include="HtmlParser\HtmlElement.cs" />
+    <Compile Include="HtmlParser\HtmlNode.cs" />
+    <Compile Include="HtmlParser\HtmlObject.cs" />
+    <Compile Include="HtmlParser\HtmlText.cs" />
     <Compile Include="SyntaxHighlighters\CowSyntaxHighlighter.cs" />
     <Compile Include="SyntaxHighlighters\HTMLSyntaxHighlighter.cs" />
     <Compile Include="SyntaxHighlighters\ISyntaxHighlighter.cs" />
     <Compile Include="SyntaxHighlighters\RawSyntaxHighlighter.cs" />
-    <Compile Include="HtmlParser\Construct.cs" />
-    <Compile Include="HtmlParser\Field.cs" />
     <Compile Include="HtmlEditorWindow.xaml.cs">
       <DependentUpon>HtmlEditorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
