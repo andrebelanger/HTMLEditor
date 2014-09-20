@@ -80,44 +80,28 @@ namespace HtmlEditor
 			_reformatting = true;
 			BeginChange();
 
-			Inline cursorElement = null;
+			Paragraph cursorElement = null;
+			var offset = 0;
 
 			foreach (var p in paragraphs)
 			{
-				IEnumerable<Inline> reflow;
-
 				var containsCursor = CaretPosition != null && CaretPosition.CompareTo(p.ContentStart) >= 0 &&
 				                     CaretPosition.CompareTo(p.ContentEnd) <= 0;
 
 				if (containsCursor)
 				{
-					var before = new TextRange(p.ContentStart, CaretPosition).Text;
-					var after = new TextRange(CaretPosition, p.ContentEnd).Text;
-					var reflowList = new List<Inline>();
-
-
-
-					// TODO: Whitespace goes here
-
-					if (!string.IsNullOrEmpty(before))
-						reflowList.AddRange(FormatLine(before));
-					reflowList.Add((cursorElement = new Run()));
-					if (!string.IsNullOrEmpty(after))
-						reflowList.AddRange(FormatLine(after));
-
-					reflow = reflowList;
+					cursorElement = p;
+					offset = p.ContentEnd.GetOffsetToPosition(CaretPosition);
 				}
-				else
-				{
-					reflow = FormatLine(new TextRange(p.ContentStart, p.ContentEnd).Text);
-				}
+				
+				var reflow = FormatLine(new TextRange(p.ContentStart, p.ContentEnd).Text);
 
 				p.Inlines.Clear();
 				p.Inlines.AddRange(reflow);
 			}
 
 			if (cursorElement != null)
-				CaretPosition = cursorElement.ContentStart;
+				CaretPosition = cursorElement.ContentEnd.GetPositionAtOffset(offset);
 
 			EndChange();
 			_reformatting = false;
