@@ -15,6 +15,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 	/// </summary>
 	public class PlainEditor : RichTextBox, ICodeEditor
 	{
+		private bool _reformatting;
+
 		/// <summary>
 		/// Gets or sets a value indicating whether word wrap is enabled.
 		/// </summary>
@@ -79,11 +81,14 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		}
 
 		/// <summary>
-		/// By default, the RichTextBox sets the TextIndent property, but that's a little awkward
-		/// in terms of editing (You can't select any whitespace before the line)
-		/// so we'll override that and actually insert the \t.
+		/// Called when the <see cref="E:System.Windows.UIElement.KeyDown" /> occurs.
 		/// </summary>
-		/// <param name="e"></param>
+		/// <remarks>
+		/// By default, the RichTextBox sets the TextIndent property when the tab key is pressed,
+		/// but that's a little awkward in terms of editing (You can't select any whitespace before the line)
+		/// so we'll override that and actually insert the \t.
+		/// </remarks>
+		/// <param name="e">The event data.</param>
 		protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
 			if (e.Key == Key.Tab)
@@ -98,6 +103,48 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			}
 
 			base.OnPreviewKeyDown(e);
+		}
+
+		/// <summary>
+		/// Is called when content in this editing control changes.
+		/// </summary>
+		/// <param name="e">The arguments that are associated with the <see cref="E:System.Windows.Controls.Primitives.TextBoxBase.TextChanged" /> event.</param>
+		protected override void OnTextChanged(TextChangedEventArgs e)
+		{
+			if (_reformatting)
+				return;
+
+			var changedParas = new HashSet<Paragraph>();
+
+			foreach (var change in e.Changes)
+			{
+				var start = Document.ContentStart.GetPositionAtOffset(change.Offset);
+				var end = Document.ContentStart.GetPositionAtOffset(change.Offset + change.AddedLength);
+
+				if (start == null || end == null)
+					continue;
+
+				var para = start.Paragraph ?? start.GetAdjacentElement(LogicalDirection.Forward) as Paragraph;
+
+				while (para != null && para.ContentStart.CompareTo(end) < 0)
+				{
+					changedParas.Add(para);
+					para = para.NextBlock as Paragraph;
+				}
+			}
+
+			ReformatParagraphs(changedParas);
+
+			base.OnTextChanged(e);
+		}
+
+		/// <summary>
+		/// Reformats (reflows and auto-indents) the paragraphs.
+		/// </summary>
+		/// <param name="paragraphs">The paragraphs.</param>
+		protected void ReformatParagraphs(IEnumerable<Paragraph> paragraphs)
+		{
+			
 		}
 	}
 }
