@@ -77,7 +77,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// <param name="lines">The lines.</param>
 		public void Load(IEnumerable<string> lines)
 		{
-			throw new NotImplementedException();
+
 		}
 
 		/// <summary>
@@ -89,6 +89,36 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		public IEnumerable<string> Save()
 		{
 			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Invoked whenever the effective value of any dependency property on this <see cref="T:System.Windows.FrameworkElement" />
+		/// has been updated. The specific dependency property that changed is reported in the arguments parameter. Overrides
+		/// <see cref="M:System.Windows.DependencyObject.OnPropertyChanged(System.Windows.DependencyPropertyChangedEventArgs)" />.
+		/// </summary>
+		/// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
+		protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+		{
+			// When one of these triggers, we need to recalculate the size of our tabs
+			if (e.Property == Control.FontFamilyProperty || e.Property == Control.FontSizeProperty ||
+			    e.Property == Control.FontStretchProperty || e.Property == Control.FontStyleProperty ||
+			    e.Property == Control.FontWeightProperty || e.Property == FrameworkElement.StyleProperty ||
+			    e.Property == Control.TemplateProperty)
+			{
+				var newTabSize = GetTabSize();
+
+				foreach (var b in Document.Blocks.OfType<Paragraph>())
+				{
+					b.Margin = new Thickness((b.Margin.Left / _sizeOfTab) * newTabSize,
+						b.Margin.Top,
+						b.Margin.Right,
+						b.Margin.Bottom);
+				}
+
+				_sizeOfTab = newTabSize;
+			}
+
+			base.OnPropertyChanged(e);
 		}
 
 		/// <summary>
