@@ -198,6 +198,9 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// <param name="paragraphs">The paragraphs.</param>
 		protected void ReformatParagraphs(IEnumerable<Paragraph> paragraphs)
 		{
+			_reformatting = true;
+			BeginChange();
+
 			foreach (var para in paragraphs)
 			{
 				var prevPara = para.PreviousBlock as Paragraph;
@@ -214,6 +217,9 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 					}
 				}
 			}
+
+			EndChange();
+			_reformatting = false;
 		}
 
 		/// <summary>
