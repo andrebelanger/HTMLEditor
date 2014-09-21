@@ -99,7 +99,6 @@ namespace HtmlEditor
 		{
 			foreach (var b in OpenBuffers())
 			{
-				//var ce = new CodeEditor(b, new CowSyntaxHighlighter());
 				var ce = new CodeEditors.PlainEditor.PlainEditor();
 				ce.Load(b.Lines);
 
