@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using HtmlEditor.SyntaxHighlighters;
 using Microsoft.Win32;
 
 namespace HtmlEditor
@@ -101,7 +100,7 @@ namespace HtmlEditor
 			foreach (var b in OpenBuffers())
 			{
 				//var ce = new CodeEditor(b, new CowSyntaxHighlighter());
-                var ce = new CodeEditor(b, new HTMLSyntaxHighlighter());
+				var ce = new RichTextBox();
 				var tab = new TabItem {Header = System.IO.Path.GetFileName(b.Filename), Content = ce};
 				CodeEditors.SelectedIndex = CodeEditors.Items.Add(tab);
 				tab.Focus();
