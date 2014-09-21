@@ -158,7 +158,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 
 			var changedParas = new HashSet<Paragraph>();
 
-			foreach (var change in e.Changes)
+			foreach (var change in e.Changes.Where(c => c.AddedLength > 0))
 			{
 				var start = Document.ContentStart.GetPositionAtOffset(change.Offset);
 				var end = Document.ContentStart.GetPositionAtOffset(change.Offset + change.AddedLength);
@@ -175,7 +175,13 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 				}
 			}
 
-			ReformatParagraphs(changedParas);
+
+			// Now let's reformat a subset of them
+			// We'll do our filtering with LINQ's WHERE clause
+			ReformatParagraphs(changedParas
+				.Where(para => (0 <= CaretPosition.CompareTo(para.ContentStart) && CaretPosition.CompareTo(para.ContentEnd) <= 0)) // Caret is in the para
+				.Where(para => string.IsNullOrEmpty(new TextRange(para.ContentStart, para.ContentEnd).Text)) // And it's an empty (ie, new) paragraph
+				);
 
 			base.OnTextChanged(e);
 		}
@@ -186,7 +192,18 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// <param name="paragraphs">The paragraphs.</param>
 		protected void ReformatParagraphs(IEnumerable<Paragraph> paragraphs)
 		{
-			
+			foreach (var para in paragraphs)
+			{
+				var prevPara = para.PreviousBlock as Paragraph;
+
+				if (prevPara != null)
+				{
+					// for now, just set it equal to the preceeding
+					para.Margin = prevPara.Margin;
+
+					// TODO: AUTO-INDENT
+				}
+			}
 		}
 
 		/// <summary>
