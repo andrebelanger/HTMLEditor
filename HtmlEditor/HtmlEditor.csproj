@@ -62,6 +62,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Buffer.cs" />
+    <Compile Include="CodeEditors\ICodeEditor.cs" />
     <Compile Include="Parser\HtmlAttribute.cs" />
     <Compile Include="Parser\HtmlElement.cs" />
     <Compile Include="Parser\HtmlObject.cs" />
