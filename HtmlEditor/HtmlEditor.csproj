@@ -63,12 +63,10 @@
     </Compile>
     <Compile Include="Buffer.cs" />
     <Compile Include="CodeEditor.cs" />
-    <Compile Include="HtmlParser\HtmlAttribute.cs" />
-    <Compile Include="HtmlParser\HtmlComment.cs" />
-    <Compile Include="HtmlParser\HtmlElement.cs" />
-    <Compile Include="HtmlParser\HtmlNode.cs" />
-    <Compile Include="HtmlParser\HtmlObject.cs" />
-    <Compile Include="HtmlParser\HtmlText.cs" />
+    <Compile Include="Parser\HtmlAttribute.cs" />
+    <Compile Include="Parser\HtmlElement.cs" />
+    <Compile Include="Parser\HtmlObject.cs" />
+    <Compile Include="Parser\HtmlParser.cs" />
     <Compile Include="SyntaxHighlighters\CowSyntaxHighlighter.cs" />
     <Compile Include="SyntaxHighlighters\HTMLSyntaxHighlighter.cs" />
     <Compile Include="SyntaxHighlighters\ISyntaxHighlighter.cs" />
