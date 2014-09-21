@@ -100,7 +100,7 @@ namespace HtmlEditor
 			foreach (var b in OpenBuffers())
 			{
 				//var ce = new CodeEditor(b, new CowSyntaxHighlighter());
-				var ce = new RichTextBox();
+				var ce = new CodeEditors.PlainEditor.PlainEditor();
 				var tab = new TabItem {Header = System.IO.Path.GetFileName(b.Filename), Content = ce};
 				CodeEditors.SelectedIndex = CodeEditors.Items.Add(tab);
 				tab.Focus();
