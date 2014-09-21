@@ -101,6 +101,10 @@ namespace HtmlEditor
 			{
 				//var ce = new CodeEditor(b, new CowSyntaxHighlighter());
 				var ce = new CodeEditors.PlainEditor.PlainEditor();
+				ce.Load(b.Lines);
+
+				System.Diagnostics.Debug.Assert(b.Lines.SequenceEqual(ce.Save()));
+
 				var tab = new TabItem {Header = System.IO.Path.GetFileName(b.Filename), Content = ce};
 				CodeEditors.SelectedIndex = CodeEditors.Items.Add(tab);
 				tab.Focus();

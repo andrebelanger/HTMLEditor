@@ -77,7 +77,23 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// <param name="lines">The lines.</param>
 		public void Load(IEnumerable<string> lines)
 		{
+			var newDoc = new FlowDocument();
 
+			_sizeOfTab = GetTabSize();
+
+			foreach (var line in lines)
+			{
+				var tabs = line.TakeWhile(c => c == '\t').Count();
+
+				var p = new Paragraph(new Run(line.Substring(tabs)))
+				{
+					Margin = new Thickness(tabs * _sizeOfTab, 0, 0, 0)
+				};
+
+				newDoc.Blocks.Add(p);
+			}
+
+			Document = newDoc;
 		}
 
 		/// <summary>
@@ -88,7 +104,9 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// </returns>
 		public IEnumerable<string> Save()
 		{
-			throw new NotImplementedException();
+			return Document.Blocks
+				.OfType<Paragraph>()
+				.Select(p => new string('\t', (int)(p.Margin.Left / _sizeOfTab)) + new TextRange(p.ContentStart, p.ContentEnd).Text);
 		}
 
 		/// <summary>
