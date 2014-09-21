@@ -26,7 +26,11 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// <value>
 		///   <c>true</c> if word wrap; otherwise, <c>false</c>.
 		/// </value>
-		public bool WordWrap { get; set; }
+		public bool WordWrap
+		{
+			get { return !Document.PageWidth.Equals(double.MaxValue); }
+			set { Document.PageWidth = value ? ViewportWidth : double.MaxValue; }
+		}
 
 		/// <summary>
 		/// Gets or sets a value indicating whether automatic indentation is enabled.
@@ -37,13 +41,13 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		public bool AutoIndent { get; set; }
 
 		/// <summary>
-		/// Gets or sets the automatic indentation amount.
+		/// Gets or sets the automatic indentation amount in terms of \t characters.
 		/// </summary>
 		/// <value>
 		/// The automatic indent amount.
 		/// </value>
 		/// <remarks>
-		/// This value is how much "nested" items are indented.
+		/// This value is how much "nested" items are indented. Default 1
 		/// </remarks>
 		public int AutoIndentAmount { get; set; }
 
@@ -53,6 +57,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		public PlainEditor()
 		{
 			AcceptsReturn = AcceptsTab = true;
+
+			AutoIndent = true;
 
 			// By default, Paragraphs have a 10-px border, so let's nuke that
 			var pStyle = new Style(typeof (Paragraph));
@@ -201,7 +207,11 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 					// for now, just set it equal to the preceeding
 					para.Margin = prevPara.Margin;
 
-					// TODO: AUTO-INDENT
+					if (AutoIndent)
+					{
+						var autoDelta = AutoIndentAmount * _sizeOfTab;
+						// TODO: AUTO-INDENT by autoDelta * number of indents
+					}
 				}
 			}
 		}
