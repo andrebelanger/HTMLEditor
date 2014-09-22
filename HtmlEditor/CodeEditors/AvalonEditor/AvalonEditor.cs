@@ -49,6 +49,10 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 		private readonly HtmlIndentationStrategy _htmlIndent;
 		private readonly IIndentationStrategy _defaultIndent;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="AvalonEditor"/> class.
+		/// </summary>
+		/// <exception cref="System.InvalidOperationException">Failed to load syntax definition</exception>
 		public AvalonEditor()
 		{
 			_foldingManager = FoldingManager.Install(TextArea);
@@ -76,6 +80,9 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 			Task.Factory.StartNew(FoldingUpdateLoop);
 		}
 
+		/// <summary>
+		/// Updates code foldings every 2 seconds
+		/// </summary>
 		private async void FoldingUpdateLoop()
 		{
 			while (true)
