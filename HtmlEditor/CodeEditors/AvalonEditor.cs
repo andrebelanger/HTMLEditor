@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
+using System.Xml;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Folding;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
 namespace HtmlEditor.CodeEditors
 {
 	/// <summary>
-	/// Adapts the AValonEditor to the ICodeEditor interface
+	/// Adapts the AvalonEditor to the ICodeEditor interface
 	/// </summary>
 	public class AvalonEditor : TextEditor, ICodeEditor
 	{
@@ -31,6 +36,42 @@ namespace HtmlEditor.CodeEditors
 		/// This value is how much "nested" items are indented.
 		/// </remarks>
 		public int AutoIndentAmount { get; set; }
+
+		private readonly FoldingManager _foldingManager;
+		private readonly AbstractFoldingStrategy _folding;
+
+		public AvalonEditor()
+		{
+			_foldingManager = FoldingManager.Install(TextArea);
+			_folding = new XmlFoldingStrategy();
+
+			// Load our HTML highlighting
+			using (var s = typeof(AvalonEditor).Assembly.GetManifestResourceStream(typeof(AvalonEditor), "HtmlHighlighting.xml"))
+			{
+				if (s == null)
+					throw new InvalidOperationException("Failed to load syntax definition");
+				using (var r = XmlReader.Create(s))
+				{
+					var highlightingDefinition = HighlightingLoader.Load(r, HighlightingManager.Instance);
+
+					SyntaxHighlighting = highlightingDefinition;
+				}
+			}
+
+			Task.Factory.StartNew(UpdateLoop);
+		}
+
+		private async void UpdateLoop()
+		{
+			while (true)
+			{
+				Dispatcher.Invoke(() => _folding.UpdateFoldings(_foldingManager, Document), DispatcherPriority.Background);
+
+				await Task.Delay(2000); // Wait 2 sec.
+				// Note that this type of delay is cheap because an await on a Task
+				// yields the thread instead of blocking it.
+			}
+		}
 
 		/// <summary>
 		/// Loads the specified lines into the editor.
