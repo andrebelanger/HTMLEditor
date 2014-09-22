@@ -65,7 +65,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Buffer.cs" />
-    <Compile Include="CodeEditors\AvalonEditor.cs" />
+    <Compile Include="CodeEditors\AvalonEditor\AvalonEditor.cs" />
+    <Compile Include="CodeEditors\AvalonEditor\HtmlIndentationStrategy.cs" />
     <Compile Include="CodeEditors\ICodeEditor.cs" />
     <Compile Include="CodeEditors\PlainEditor\PlainEditor.cs" />
     <Compile Include="Parser\HtmlAttribute.cs" />
@@ -95,7 +96,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="CodeEditors\HtmlHighlighting.xml" />
+    <EmbeddedResource Include="CodeEditors\AvalonEditor\HtmlHighlighting.xml" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

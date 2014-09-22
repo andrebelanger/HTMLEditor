@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HtmlEditor.CodeEditors.AvalonEditor;
 using Microsoft.Win32;
 
 namespace HtmlEditor
@@ -100,7 +101,7 @@ namespace HtmlEditor
 			foreach (var b in OpenBuffers())
 			{
 				//var ce = new CodeEditors.PlainEditor.PlainEditor();
-				var ce = new CodeEditors.AvalonEditor();
+				var ce = new AvalonEditor();
 				ce.Load(b.Lines);
 
 				System.Diagnostics.Debug.Assert(b.Lines.SequenceEqual(ce.Save()));

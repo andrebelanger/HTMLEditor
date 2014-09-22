@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Xml;
 using ICSharpCode.AvalonEdit;
-using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using ICSharpCode.AvalonEdit.Indentation;
 
-namespace HtmlEditor.CodeEditors
+namespace HtmlEditor.CodeEditors.AvalonEditor
 {
 	/// <summary>
 	/// Adapts the AvalonEditor to the ICodeEditor interface
@@ -24,7 +22,11 @@ namespace HtmlEditor.CodeEditors
 		/// <value>
 		///   <c>true</c> if automatic indent; otherwise, <c>false</c>.
 		/// </value>
-		public bool AutoIndent { get; set; }
+		public bool AutoIndent
+		{
+			get { return TextArea.IndentationStrategy == _htmlIndent; }
+			set { TextArea.IndentationStrategy = value ? _htmlIndent : _defaultIndent; }
+		}
 
 		/// <summary>
 		/// Gets or sets the automatic indentation amount.
@@ -35,15 +37,28 @@ namespace HtmlEditor.CodeEditors
 		/// <remarks>
 		/// This value is how much "nested" items are indented.
 		/// </remarks>
-		public int AutoIndentAmount { get; set; }
+		public int AutoIndentAmount
+		{
+			get { return _htmlIndent.AutoIndentAmount; }
+			set { _htmlIndent.AutoIndentAmount = value; }
+		}
 
 		private readonly FoldingManager _foldingManager;
 		private readonly AbstractFoldingStrategy _folding;
+
+		private readonly HtmlIndentationStrategy _htmlIndent;
+		private readonly IIndentationStrategy _defaultIndent;
 
 		public AvalonEditor()
 		{
 			_foldingManager = FoldingManager.Install(TextArea);
 			_folding = new XmlFoldingStrategy();
+
+			_htmlIndent = new HtmlIndentationStrategy();
+			_defaultIndent = new DefaultIndentationStrategy();
+
+			AutoIndent = true;
+			AutoIndentAmount = 1;
 
 			// Load our HTML highlighting
 			using (var s = typeof(AvalonEditor).Assembly.GetManifestResourceStream(typeof(AvalonEditor), "HtmlHighlighting.xml"))
@@ -58,10 +73,10 @@ namespace HtmlEditor.CodeEditors
 				}
 			}
 
-			Task.Factory.StartNew(UpdateLoop);
+			Task.Factory.StartNew(FoldingUpdateLoop);
 		}
 
-		private async void UpdateLoop()
+		private async void FoldingUpdateLoop()
 		{
 			while (true)
 			{
