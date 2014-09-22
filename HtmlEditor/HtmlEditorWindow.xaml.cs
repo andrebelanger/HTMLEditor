@@ -99,7 +99,8 @@ namespace HtmlEditor
 		{
 			foreach (var b in OpenBuffers())
 			{
-				var ce = new CodeEditors.PlainEditor.PlainEditor();
+				//var ce = new CodeEditors.PlainEditor.PlainEditor();
+				var ce = new CodeEditors.AvalonEditor();
 				ce.Load(b.Lines);
 
 				System.Diagnostics.Debug.Assert(b.Lines.SequenceEqual(ce.Save()));
