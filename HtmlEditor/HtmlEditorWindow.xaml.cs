@@ -37,7 +37,8 @@ namespace HtmlEditor
 			{
 				DefaultExt = ".html",
 				Filter = "HTML files|*.htm;*.html|All files|*",
-				Title = "Open File"
+				Title = "Open File",
+				Multiselect = true
 			};
 
 			if (ofd.ShowDialog() == true)
@@ -100,16 +101,8 @@ namespace HtmlEditor
 		{
 			foreach (var b in OpenBuffers())
 			{
-				//var ce = new CodeEditors.PlainEditor.PlainEditor();
-				var ce = new AvalonEditor();
-				ce.Load(b.Lines);
-
-				System.Diagnostics.Debug.Assert(b.Lines.SequenceEqual(ce.Save()));
-
-				var tab = new TabItem {Header = System.IO.Path.GetFileName(b.Filename), Content = ce};
-				CodeEditors.SelectedIndex = CodeEditors.Items.Add(tab);
-				tab.Focus();
-				ce.Focus();
+				CodeEditors.SelectedIndex = CodeEditors.Items.Add(b);
+				b.Focus();
 			}
 		}
 	}
