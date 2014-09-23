@@ -103,6 +103,7 @@ namespace HtmlEditor
 			{
 				CodeEditors.SelectedIndex = CodeEditors.Items.Add(b);
 				b.Focus();
+				b.CodeEditor.Focus();
 			}
 		}
 	}

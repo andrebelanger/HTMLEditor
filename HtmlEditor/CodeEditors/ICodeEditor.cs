@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace HtmlEditor.CodeEditors
 {
 	/// <summary>
 	/// Defines basic operations supported by all code editors
 	/// </summary>
-	public interface ICodeEditor
+	public interface ICodeEditor : System.Windows.IInputElement
 	{
 		/// <summary>
 		/// Gets or sets a value indicating whether word wrap is enabled.
