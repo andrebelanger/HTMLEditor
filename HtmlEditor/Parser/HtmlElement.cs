@@ -8,13 +8,14 @@ namespace HtmlEditor.Parser
 {
     public class HtmlElement : HtmlObject
     {
-	    public string Tag { get; private set; }
-        public ICollection<HtmlObject> Children { get; private set; }
+        public string TagType { get; set; }
+	    public string Tag { get; set; }
+        public ICollection<HtmlObject> Children { get; set; }
 
-	    public HtmlElement(string tag)
+        public HtmlElement Parent { get; set; }
+
+	    public HtmlElement()
 	    {
-		    Tag = tag;
-
 		    Children = new List<HtmlObject>();
 	    }
     }
