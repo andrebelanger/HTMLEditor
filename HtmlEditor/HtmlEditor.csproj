@@ -70,16 +70,17 @@
     <Compile Include="CodeEditors\ICodeEditor.cs" />
     <Compile Include="CodeEditors\PlainEditor\PlainEditor.cs" />
     <Compile Include="Parser\CountingEnumerator.cs" />
-    <Compile Include="Parser\HtmlAttribute.cs" />
+    <Compile Include="Parser\HtmlDoctype.cs" />
     <Compile Include="Parser\HtmlElement.cs" />
     <Compile Include="Parser\HtmlObject.cs" />
-    <Compile Include="Parser\HtmlParser.cs" />
     <Compile Include="HtmlEditorWindow.xaml.cs">
       <DependentUpon>HtmlEditorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parser\HtmlParser.cs" />
+    <Compile Include="Parser\HtmlText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
