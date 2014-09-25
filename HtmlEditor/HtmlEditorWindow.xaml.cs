@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HtmlEditor.CodeEditors.AvalonEditor;
 using Microsoft.Win32;
+using HtmlEditor.Parser;
 
 namespace HtmlEditor
 {
@@ -99,6 +100,8 @@ namespace HtmlEditor
 
 		private void OpenExample(object sender, RoutedEventArgs e)
 		{
+            HtmlParser parser = new HtmlParser();
+            parser.ParseHtml("<html><head><img /><div><h1/></div></head><body>Test<img /></body></html>");
 			foreach (var b in OpenBuffers())
 			{
 				CodeEditors.SelectedIndex = CodeEditors.Items.Add(b);
