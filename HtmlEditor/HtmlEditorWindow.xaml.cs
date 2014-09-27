@@ -26,6 +26,11 @@ namespace HtmlEditor
 		public HtmlEditorWindow()
 		{
 			InitializeComponent();
+
+			var filenames = Environment.GetCommandLineArgs().Skip(1);
+
+			foreach (var buff in filenames.Select(Buffer.Load))
+				AddBuffer(buff);
 		}
 
 		/// <summary>
@@ -98,15 +103,21 @@ namespace HtmlEditor
 				SaveBuffer(b);
 		}
 
+		private void AddBuffer(Buffer b)
+		{			
+			CodeEditors.SelectedIndex = CodeEditors.Items.Add(b);
+			b.Focus();
+			b.CodeEditor.Focus();
+		}
+
 		private void OpenExample(object sender, RoutedEventArgs e)
 		{
             HtmlParser parser = new HtmlParser();
             parser.ParseHtml("<html><head><img /><div><h1/></div></head><body>Test<img /></body></html>");
+
 			foreach (var b in OpenBuffers())
 			{
-				CodeEditors.SelectedIndex = CodeEditors.Items.Add(b);
-				b.Focus();
-				b.CodeEditor.Focus();
+				AddBuffer(b);
 			}
 		}
 	}
