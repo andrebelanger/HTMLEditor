@@ -52,6 +52,25 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		public int AutoIndentAmount { get; set; }
 
 		public bool IsDirty { get; set; }
+		public void IndentLine()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void IndentSelection()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void IndentBuffer()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Insert(IEnumerable<string> Lines)
+		{
+			throw new NotImplementedException();
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PlainEditor"/> class.

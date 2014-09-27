@@ -44,6 +44,25 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 		}
 
 		public bool IsDirty { get; set; }
+		public void IndentLine()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void IndentSelection()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void IndentBuffer()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Insert(IEnumerable<string> Lines)
+		{
+			throw new NotImplementedException();
+		}
 
 		private readonly FoldingManager _foldingManager;
 		private readonly AbstractFoldingStrategy _folding;

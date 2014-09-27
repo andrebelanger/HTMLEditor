@@ -48,5 +48,13 @@ namespace HtmlEditor.CodeEditors
 		IEnumerable<string> Save();
 
 		bool IsDirty { get; set; }
+
+		void IndentLine();
+
+		void IndentSelection();
+
+		void IndentBuffer();
+
+		void Insert(IEnumerable<string> Lines);
 	}
 }
