@@ -183,13 +183,142 @@ namespace HtmlEditor.Parser
 
             string TagType = html.Substring(TagStart + 1, (TagEnd - 1) - TagStart);
 
-            //ValidateTagType(TagType);   //Validate it's a valid html tag
+            TagType = ValidateTagType(TagType);   //Validate it's a valid html tag
             return TagType;
         }
-        private void ValidateTagType()
+        private string ValidateTagType(string tag)
         {
-            //TODO
-            //Check 
+
+            switch (tag)
+            {
+                case "!--":
+                case "a":
+                case "abbr":
+                case "acronym":
+                case "address":
+                case "applet":
+                case "area":
+                case "article":
+                case "aside":
+                case "audio":
+                case "b":
+                case "base":
+                case "basefront":
+                case "bdi":
+                case "bdo":
+                case "big":
+                case "blockquote":
+                case "body":
+                case "br":
+                case "button":
+                case "canvas":
+                case "caption":
+                case "center":
+                case "cite":
+                case "code":
+                case "col":
+                case "colgroup":
+                case "datalist":
+                case "dd":
+                case "del":
+                case "details":
+                case "dfn":
+                case "dialog":
+                case "dir":
+                case "div":
+                case "dl":
+                case "dt":
+                case "em":
+                case "embed":
+                case "fieldset":
+                case "figcaption":
+                case "figure":
+                case "font":
+                case "footer":
+                case "form":
+                case "frame":
+                case "frameset":
+                case "h1":
+                case "h2":
+                case "h3":
+                case "h4":
+                case "h5":
+                case "h6":
+                case "head":
+                case "header":
+                case "hgroup":
+                case "hr":
+                case "html":
+                case "i":
+                case "iframe":
+                case "img":
+                case "input":
+                case "ins":
+                case "kbd":
+                case "keygen":
+                case "label":
+                case "legend":
+                case "li":
+                case "link":
+                case "main":
+                case "map":
+                case "mark":
+                case "menu":
+                case "menuitem":
+                case "meta":
+                case "meter":
+                case "nav":
+                case "noframes":
+                case "noscript":
+                case "object":
+                case "ol":
+                case "optgroup":
+                case "option":
+                case "output":
+                case "p":
+                case "param":
+                case "pre":
+                case "progress":
+                case "q":
+                case "rp":
+                case "rt":
+                case "ruby":
+                case "s":
+                case "samp":
+                case "script":
+                case "section":
+                case "select":
+                case "small":
+                case "source":
+                case "span":
+                case "strike":
+                case "strong":
+                case "style":
+                case "sub":
+                case "summary":
+                case "sup":
+                case "table":
+                case "tbody":
+                case "td":
+                case "textarea":
+                case "tfoot":
+                case "th":
+                case "thread":
+                case "time":
+                case "title":
+                case "tr":
+                case "track":
+                case "tt":
+                case "u":
+                case "ul":
+                case "var":
+                case "video":
+                case "wbr":
+                    return tag;
+                default:
+                    //throw new Exception("Not A Valid HTML Tag Error");
+                    return tag;
+            }
 
         }
     }
