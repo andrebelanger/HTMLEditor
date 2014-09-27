@@ -77,6 +77,7 @@ namespace HtmlEditor
 		public void Save(string filename)
 		{
 			File.WriteAllLines(filename, CodeEditor.Save());
+			CodeEditor.IsDirty = false;
 		}
 
 		/// <summary>
@@ -90,6 +91,8 @@ namespace HtmlEditor
 
 			b.Filename = filename;
 			b.CodeEditor.Load(File.ReadAllLines(filename));
+
+			b.CodeEditor.IsDirty = false;
 
 			return b;
 		}

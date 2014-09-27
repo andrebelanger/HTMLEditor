@@ -51,6 +51,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// </remarks>
 		public int AutoIndentAmount { get; set; }
 
+		public bool IsDirty { get; set; }
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PlainEditor"/> class.
 		/// </summary>
@@ -236,6 +238,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 				.Where(para => (0 <= CaretPosition.CompareTo(para.ContentStart) && CaretPosition.CompareTo(para.ContentEnd) <= 0)) // Caret is in the para
 				.Where(para => string.IsNullOrEmpty(new TextRange(para.ContentStart, para.ContentEnd).Text)) // And it's an empty (ie, new) paragraph
 				);
+
+			IsDirty = true;
 
 			base.OnTextChanged(e);
 		}

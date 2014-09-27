@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace HtmlEditor.CodeEditors
 {
@@ -45,5 +46,7 @@ namespace HtmlEditor.CodeEditors
 		/// </summary>
 		/// <returns>The current lines</returns>
 		IEnumerable<string> Save();
+
+		bool IsDirty { get; set; }
 	}
 }

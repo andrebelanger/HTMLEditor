@@ -43,6 +43,8 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 			set { _htmlIndent.AutoIndentAmount = value; }
 		}
 
+		public bool IsDirty { get; set; }
+
 		private readonly FoldingManager _foldingManager;
 		private readonly AbstractFoldingStrategy _folding;
 
@@ -113,6 +115,13 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 		public IEnumerable<string> Save()
 		{
 			return Document.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+		}
+
+		protected override void OnTextChanged(EventArgs e)
+		{
+			IsDirty = true;
+
+			base.OnTextChanged(e);
 		}
 	}
 }
