@@ -55,6 +55,6 @@ namespace HtmlEditor.CodeEditors
 
 		void IndentBuffer();
 
-		void Insert(IEnumerable<string> Lines);
+		void Insert(IEnumerable<string> lines);
 	}
 }

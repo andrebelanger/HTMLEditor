@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,25 +53,6 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		public int AutoIndentAmount { get; set; }
 
 		public bool IsDirty { get; set; }
-		public void IndentLine()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void IndentSelection()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void IndentBuffer()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Insert(IEnumerable<string> Lines)
-		{
-			throw new NotImplementedException();
-		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PlainEditor"/> class.
@@ -177,12 +159,12 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 
 				if (e.Key == Key.Tab && !shift)
 				{
-					para.Margin = new Thickness(para.Margin.Left + _sizeOfTab, para.Margin.Top, para.Margin.Right, para.Margin.Bottom);
+					IndentBlock(para, 1);
 					e.Handled = true;
 				}
-				else if ((e.Key == Key.Back && para.Margin.Left > 0) || (e.Key == Key.Tab && shift))
+				else if ((e.Key == Key.Back) || (e.Key == Key.Tab && shift))
 				{
-					para.Margin = new Thickness(para.Margin.Left - _sizeOfTab, para.Margin.Top, para.Margin.Right, para.Margin.Bottom);
+					IndentBlock(para, -1);
 					e.Handled = true;
 				}
 			}
@@ -231,7 +213,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			if (_reformatting)
 				return;
 
-			var changedParas = new HashSet<Paragraph>();
+			var changedParas = new List<Paragraph>();
 
 			foreach (var change in e.Changes.Where(c => c.AddedLength > 0))
 			{
@@ -241,19 +223,14 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 				if (start == null || end == null)
 					continue;
 
-				var para = start.Paragraph ?? start.GetAdjacentElement(LogicalDirection.Forward) as Paragraph;
-
-				while (para != null && para.ContentStart.CompareTo(end) < 0)
-				{
-					changedParas.Add(para);
-					para = para.NextBlock as Paragraph;
-				}
+				changedParas.AddRange(GetParagraphsBetweenPositions(start, end));
 			}
 
 
 			// Now let's reformat a subset of them
 			// We'll do our filtering with LINQ's WHERE clause
 			ReformatParagraphs(changedParas
+				.Distinct()
 				.Where(para => (0 <= CaretPosition.CompareTo(para.ContentStart) && CaretPosition.CompareTo(para.ContentEnd) <= 0)) // Caret is in the para
 				.Where(para => string.IsNullOrEmpty(new TextRange(para.ContentStart, para.ContentEnd).Text)) // And it's an empty (ie, new) paragraph
 				);
@@ -262,6 +239,78 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 
 			base.OnTextChanged(e);
 		}
+
+		private static IEnumerable<Paragraph> GetParagraphsBetweenPositions(TextPointer start, TextPointer end)
+		{
+			var changedParas = new HashSet<Paragraph>();
+			var para = start.Paragraph ?? start.GetAdjacentElement(LogicalDirection.Forward) as Paragraph;
+
+			while (para != null && para.ContentStart.CompareTo(end) < 0)
+			{
+				changedParas.Add(para);
+				para = para.NextBlock as Paragraph;
+			}
+
+			return changedParas;
+		}
+
+		public void IndentLine()
+		{
+			IndentBlock(CaretPosition.Paragraph, 1);
+		}
+
+		public void IndentSelection()
+		{
+			foreach (var p in GetParagraphsBetweenPositions(Selection.Start, Selection.End))
+			{
+				IndentBlock(p, 1);
+			}
+		}
+
+		public void IndentBuffer()
+		{
+			foreach (var p in Document.Blocks)
+			{
+				IndentBlock(p, 1);
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void IndentBlock(Block para, int amount)
+		{
+			para.Margin = new Thickness(Math.Max(para.Margin.Left + _sizeOfTab * amount, 0), para.Margin.Top, para.Margin.Right, para.Margin.Bottom);
+		}
+
+		public void Insert(IEnumerable<string> lines)
+		{
+			var changed = new List<Paragraph>();
+
+			using (var e = lines.GetEnumerator())
+			{
+				if (!e.MoveNext())
+					return;
+
+				var p = CaretPosition.Paragraph;
+
+				var r = new Run(e.Current);
+				p.Inlines.Add(r);
+				changed.Add(p);
+
+				while (e.MoveNext())
+				{
+					r = new Run(e.Current);
+					var newP = new Paragraph(r);
+					Document.Blocks.InsertAfter(p, newP);
+					p = newP;
+					changed.Add(p);
+				}
+
+				ReformatParagraphs(changed);
+
+				CaretPosition = r.ContentEnd;
+			}
+		}
+
 
 		/// <summary>
 		/// Reformats (reflows and auto-indents) the paragraphs.

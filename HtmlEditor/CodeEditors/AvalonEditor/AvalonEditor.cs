@@ -59,7 +59,7 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 			throw new NotImplementedException();
 		}
 
-		public void Insert(IEnumerable<string> Lines)
+		public void Insert(IEnumerable<string> lines)
 		{
 			throw new NotImplementedException();
 		}
