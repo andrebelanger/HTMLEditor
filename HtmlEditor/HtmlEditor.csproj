@@ -69,6 +69,9 @@
     <Compile Include="CodeEditors\AvalonEditor\HtmlIndentationStrategy.cs" />
     <Compile Include="CodeEditors\ICodeEditor.cs" />
     <Compile Include="CodeEditors\PlainEditor\PlainEditor.cs" />
+    <Compile Include="InsertTableWindow.xaml.cs">
+      <DependentUpon>InsertTableWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Parser\CountingEnumerator.cs" />
     <Compile Include="Parser\HtmlAttribute.cs" />
     <Compile Include="Parser\HtmlElement.cs" />
@@ -78,6 +81,10 @@
       <DependentUpon>HtmlEditorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="InsertTableWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

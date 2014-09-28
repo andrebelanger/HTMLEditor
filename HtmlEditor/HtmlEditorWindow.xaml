@@ -7,13 +7,12 @@
             <MenuItem Header="_File" Click="OpenExample">
                 <MenuItem Header="_Open"  />
                 <Separator />
+                <MenuItem Header="_Validate"/>
+                <Separator />
                 <MenuItem Header="_Save" />
                 <MenuItem Header="Save _As"/>
             </MenuItem>
             <MenuItem Header="_Edit" Click="OpenExample">
-                <MenuItem Header="_Add..." >
-                    <MenuItem Header="_Table" />
-                </MenuItem>
                 <MenuItem Header="_Bold" />
                 <MenuItem Header="_Italic" />
             </MenuItem>
@@ -22,14 +21,11 @@
                 <MenuItem Header="_AvalonEdit"/>
             </MenuItem>
             <MenuItem Header="_Insert">
-                <MenuItem Header="_Table">
-                    <MenuItem Header="Rows"/>
-                    <MenuItem Header="Columns"/> 
-                </MenuItem>
+                <MenuItem Header="_Table" Click="OpenTableWindow"/>
+                <MenuItem Header="_List"/>
             </MenuItem>
             <MenuItem Header="X" HorizontalAlignment="Right"/>
         </Menu>
-        
         <TabControl x:Name="CodeEditors">
         </TabControl>
 	</DockPanel>

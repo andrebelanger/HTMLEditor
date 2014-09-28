@@ -120,5 +120,17 @@ namespace HtmlEditor
 				AddBuffer(b);
 			}
 		}
+
+        /// <summary>
+        /// Opens prompt to create a new table
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenTableWindow(object sender, RoutedEventArgs e)
+        {
+
+            InsertTableWindow tableWindow = new InsertTableWindow();
+            tableWindow.Show();
+        }
 	}
 }
