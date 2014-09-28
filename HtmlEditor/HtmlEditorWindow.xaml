@@ -22,7 +22,7 @@
             </MenuItem>
             <MenuItem Header="_Insert">
                 <MenuItem Header="_Table" Click="OpenTableWindow"/>
-                <MenuItem Header="_List"/>
+                <MenuItem Header="_List" Click="OpenListWindow"/>
             </MenuItem>
             <MenuItem Header="X" HorizontalAlignment="Right"/>
         </Menu>

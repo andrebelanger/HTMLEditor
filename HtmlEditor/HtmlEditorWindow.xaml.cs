@@ -132,5 +132,17 @@ namespace HtmlEditor
             InsertTableWindow tableWindow = new InsertTableWindow();
             tableWindow.Show();
         }
+
+        /// <summary>
+        /// Opens prompt to create a new list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenListWindow(object sender, RoutedEventArgs e)
+        {
+
+            InsertListWindow listWindow = new InsertListWindow();
+            listWindow.Show();
+        }
 	}
 }
