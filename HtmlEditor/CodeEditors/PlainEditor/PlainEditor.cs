@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using HtmlEditor.Parser;
 
 namespace HtmlEditor.CodeEditors.PlainEditor
 {
@@ -62,6 +63,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			AcceptsReturn = AcceptsTab = true;
 
 			AutoIndent = true;
+            AutoIndentAmount = 1;
 
 			// By default, Paragraphs have a 10-px border, so let's nuke that
 			var pStyle = new Style(typeof (Paragraph));
@@ -332,8 +334,10 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 
 					if (AutoIndent)
 					{
-						var autoDelta = AutoIndentAmount * _sizeOfTab;
-						// TODO: AUTO-INDENT by autoDelta * number of indents
+						var autoDelta = AutoIndentAmount * _sizeOfTab * HtmlParser.CountUnclosedTags(new TextRange(prevPara.ContentStart, prevPara.ContentEnd).Text);
+
+						if (autoDelta > 0)
+							para.Margin = new Thickness(para.Margin.Left + autoDelta, para.Margin.Top, para.Margin.Right, para.Margin.Bottom);
 					}
 				}
 			}
@@ -350,6 +354,12 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		{
 			return new FormattedText("\t", CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
 				new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black).Width;
+		}
+
+
+		public List<HtmlObject> ParseHtml()
+		{
+			return HtmlParser.Parse(Save());
 		}
 	}
 }

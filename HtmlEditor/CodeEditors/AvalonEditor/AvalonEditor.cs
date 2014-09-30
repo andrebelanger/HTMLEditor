@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Xml;
+using HtmlEditor.Parser;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -141,6 +142,11 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 			IsDirty = true;
 
 			base.OnTextChanged(e);
+		}
+
+		public List<HtmlObject> ParseHtml()
+		{
+			return HtmlParser.Parse(Save());
 		}
 	}
 }

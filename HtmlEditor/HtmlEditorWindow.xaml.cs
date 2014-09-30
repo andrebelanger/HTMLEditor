@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,6 +33,8 @@ namespace HtmlEditor
 
 			foreach (var buff in filenames.Select(Buffer.Load))
 				AddBuffer(buff);
+
+            AddBuffer(new Buffer());
 		}
 
 		/// <summary>
@@ -86,9 +89,9 @@ namespace HtmlEditor
 		/// Saves a single buffer, prompting for a filename if needed.
 		/// </summary>
 		/// <param name="buffer">The buffer</param>
-		public void SaveBuffer(Buffer buffer)
+		private void SaveBuffer(Buffer buffer)
 		{
-			if (buffer.Filename == null)
+			if (buffer.Filename != null)
 				buffer.Save();
 			else
 				SaveBufferAs(buffer);
@@ -98,7 +101,7 @@ namespace HtmlEditor
 		/// Saves all provided buffers.
 		/// </summary>
 		/// <param name="buffers">The buffers.</param>
-		public void SaveAllBuffers(IEnumerable<Buffer> buffers)
+		private void SaveAllBuffers(IEnumerable<Buffer> buffers)
 		{
 			foreach (var b in buffers)
 				SaveBuffer(b);
@@ -111,16 +114,51 @@ namespace HtmlEditor
 			b.CodeEditor.Focus();
 		}
 
-		private void OpenExample(object sender, RoutedEventArgs e)
+		//EVENT HANDLERS
+        private void Open(object sender, RoutedEventArgs e)
 		{
-            HtmlParser parser = new HtmlParser();
-            parser.ParseHtml("<html><head><img /><div><h1/></div></head><body>Test<img /></body></html>");
-
-			foreach (var b in OpenBuffers())
+         	foreach (var b in OpenBuffers())
 			{
 				AddBuffer(b);
 			}
+
+            Validate(sender, e);
 		}
+
+        private void Validate(object sender, RoutedEventArgs e)
+        {
+            Buffer buffer = (Buffer)CodeEditors.SelectedItem;
+
+            try
+            {
+                buffer.CodeEditor.ParseHtml();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
+            MessageBox.Show("You have valid HTML!");
+        }
+
+        private void Save(object sender, RoutedEventArgs e)
+        {
+            Buffer buffer = (Buffer)CodeEditors.SelectedItem;
+
+            SaveBuffer(buffer);
+
+            Validate(sender, e);
+        }
+
+        private void SaveAs(object sender, RoutedEventArgs e)
+        {
+            Buffer buffer = (Buffer)CodeEditors.SelectedItem;
+
+            SaveBufferAs(buffer);
+
+            Validate(sender, e);
+        }
 
         /// <summary>
         /// Opens prompt to create a new table
@@ -130,7 +168,7 @@ namespace HtmlEditor
         private void OpenTableWindow(object sender, RoutedEventArgs e)
         {
 
-            InsertTableWindow tableWindow = new InsertTableWindow();
+            InsertTableWindow tableWindow = new InsertTableWindow(this);
             tableWindow.Show();
         }
 
@@ -142,10 +180,9 @@ namespace HtmlEditor
         private void OpenListWindow(object sender, RoutedEventArgs e)
         {
 
-            InsertListWindow listWindow = new InsertListWindow();
+            InsertListWindow listWindow = new InsertListWindow(this);
             listWindow.Show();
         }
-
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
@@ -156,6 +193,64 @@ namespace HtmlEditor
                     e.Cancel = true;
                 }
             }
+        }
+
+        public void InsertTable(int rows, int columns)
+        {
+            // get current buffer
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+
+            var table = new List<string>{"<table>"};
+
+
+            for (int i = 0; i < rows; i++)
+            {
+                table.Add("<tr>");
+                for (int j = 0; j < columns; j++)
+                    table.Add("<td></td>");
+                table.Add("</tr>");
+            }
+
+            table.Add("</table>");
+
+            buffer.CodeEditor.Insert(table);
+
+        }
+
+        public void InsertOrderedList(int items)
+        {
+            // get current buffer
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+
+            var table = new List<string> { "<ol>" };
+
+            for (int i = 0; i < items; i++)
+            {
+                table.Add("<li>");
+                table.Add("</li>");
+            }
+
+            table.Add("</ol>");
+
+            buffer.CodeEditor.Insert(table);
+        }
+
+        public void InsertUnorderedList(int items)
+        {
+            // get current buffer
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+
+            var table = new List<string> { "<ul>" };
+
+            for (int i = 0; i < items; i++)
+            {
+                table.Add("<li>");
+                table.Add("</li>");
+            }
+
+            table.Add("</ul>");
+
+            buffer.CodeEditor.Insert(table);
         }
 	}
 }

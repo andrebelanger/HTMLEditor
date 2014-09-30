@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
+using HtmlEditor.Parser;
 
 namespace HtmlEditor.CodeEditors
 {
@@ -47,14 +48,30 @@ namespace HtmlEditor.CodeEditors
 		/// <returns>The current lines</returns>
 		IEnumerable<string> Save();
 
+		/// <summary>
+		/// Gets or sets a value indicating whether this instance is dirty.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if this instance is dirty; otherwise, <c>false</c>.
+		/// </value>
 		bool IsDirty { get; set; }
 
-		void IndentLine();
+		/*void IndentLine();
 
 		void IndentSelection();
 
-		void IndentBuffer();
+		void IndentBuffer();*/
 
+		/// <summary>
+		/// Inserts the specified lines.
+		/// </summary>
+		/// <param name="lines">The lines.</param>
 		void Insert(IEnumerable<string> lines);
+
+		/// <summary>
+		/// Parses the buffer into an HTML tree.
+		/// </summary>
+		/// <returns>A list of root-level objects</returns>
+		List<HtmlObject> ParseHtml();
 	}
 }

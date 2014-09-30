@@ -19,9 +19,21 @@ namespace HtmlEditor
     /// </summary>
     public partial class InsertTableWindow : Window
     {
-        public InsertTableWindow()
+        private HtmlEditorWindow _editorWindow;
+        public InsertTableWindow(HtmlEditorWindow editorWindow)
         {
             InitializeComponent();
+            _editorWindow = editorWindow;
+        }
+
+        /// <summary>
+        /// Call the InsertList() function from HtmlEditorWindow
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InsertPressed(object sender, RoutedEventArgs e)
+        {
+            _editorWindow.InsertTable(Convert.ToInt32(RowsBox.Text), Convert.ToInt32(ColumnsBox.Text));
         }
     }
 }

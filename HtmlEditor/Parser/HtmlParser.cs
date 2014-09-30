@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,319 +8,165 @@ using System.Threading.Tasks;
 
 namespace HtmlEditor.Parser
 {
-    public class HtmlParser
-    {
-        HtmlElement ValidatedHtml = new HtmlElement();
-        public HtmlObject ParseHtml(string html)
-        {
-            Parse(ValidatedHtml, html);
-            return ValidatedHtml;
-        }
+	public static class HtmlParser
+	{
+		/// <summary>
+		/// Parses the specified HTML.
+		/// </summary>
+		/// <param name="html">The HTML.</param>
+		/// <returns>A list of root level objects</returns>
+		/// <exception cref="System.IO.InvalidDataException">Error on line  + e.Index + :  + ex.Message</exception>
+		public static List<HtmlObject> Parse(IEnumerable<string> html)
+		{
+			using (var e = html.GetCountingEnumerator())
+			{
+				try
+				{
+					return ParseInternal(e);
+				}
+				catch (InvalidDataException ex)
+				{
+					throw new InvalidDataException("Error on line " + e.Index + ": " + ex.Message, ex);
+				}
+			}
+		}
 
-        private string Parse(HtmlElement currentTag, string html)
-        {
-            int TagStart;
-            int TagEnd;
+		/// <summary>
+		/// Actually does the parsing
+		/// </summary>
+		/// <param name="lines">The lines.</param>
+		/// <returns></returns>
+		/// <exception cref="System.IO.InvalidDataException">
+		/// Missing element end.
+		/// or
+		/// Extra end tag
+		/// or
+		/// or
+		/// Unclosed tags
+		/// </exception>
+		private static List<HtmlObject> ParseInternal(IEnumerator<string> lines)
+		{
+			// TODO: Refactor me!!
 
-            TagStart = html.IndexOf("<");   //Gets start position of a tag
-            TagEnd = html.IndexOf(">"); //Gets end position of a tag
+			var roots = new List<HtmlObject>();
+			var tagStack = new Stack<HtmlElement>();
 
-            if (TagStart > TagEnd)   //If a End tag comes before Start tag: DIE
-                throw new Exception("End tag found before start tag");
+			while (lines.MoveNext())
+			{
+				var index = 0;
 
-            if (IsClosingTag(TagStart,html))  //HANDLES: Closing tags (self closing tags not included)
-            {
-                if (html.Substring(TagStart, (TagEnd + 1) - TagStart) == "</" + currentTag.TagType + ">") //If this is the end of the current tag
-                {
-                    currentTag.Tag += "</" + currentTag.TagType + ">";
-                    html = html.Remove(TagStart, (TagEnd + 1) - TagStart);  //Remove the closing tag
+				while (lines.Current != null && (index = lines.Current.IndexOf('<', index)) != -1) // All html directives start with <
+				{
+					var directiveType = IdentifyDirective(lines.Current, index);
 
-                    TagStart = html.IndexOf("<");   //Gets next tag start
-                    if (TagStart != -1)
-                    {
-                        if (IsClosingTag(TagStart, html))  //If next tag is a closing tag
-                            MoveToNextTag(currentTag.Parent, html, false);
-                        else
-                            MoveToNextTag(currentTag.Parent, html, true);
-                    }
-                    //WILL END IF: No more tags to parse
-                }
-                else
-                {
-                    throw new Exception("Wrong end tag for: " + currentTag.TagType);
-                }
-            }
-            else   //HANDLES: Opening tags & self closing tags
-            {
-                //Gets the opening tag
-                currentTag.Tag = html.Substring(TagStart, (TagEnd + 1) - TagStart);  //Retrieves tag
-                currentTag.TagType = GetTagType(html);   //Gets the type of tag 
-                html = html.Remove(TagStart, (TagEnd + 1) - TagStart);   //Remove tag from HTML text
+					if (directiveType == HtmlDirectives.Comment)
+					{
+						do // Discard all text until the end of comment marker
+						{
+							index = lines.Current.IndexOf("-->", StringComparison.OrdinalIgnoreCase) + 3;
+							if (index != 0)
+								break;
+						} while (lines.MoveNext());
+					}
+					else
+					{
+						var endIndex = lines.Current.IndexOf('>', index);
+						if (endIndex == -1)
+							throw new InvalidDataException("Missing element end.");
 
-                if (currentTag.Tag[currentTag.Tag.Length - 2].ToString() == "/")    //HANDLES: Self closing tags : Checks to see if the char before '>' is a '/'
-                {
-                    TagStart = html.IndexOf("<");   //Gets next tag start
-                    if (TagStart != -1)
-                    {
-                        if (IsClosingTag(TagStart, html))  //If next tag is a closing tag
-                            MoveToNextTag(currentTag.Parent, html, false);
-                        else
-                            MoveToNextTag(currentTag.Parent, html, true);
-                    }
-                    //WILL END: No parent tag so no more Html to parse
-                }
-                else   //HANDLES: Non self closing tag
-                {
-                    TagStart = html.IndexOf("<");   //Gets next tag start
+						var directiveText = lines.Current.Substring(index, endIndex - index+1);
 
-                    //HANDLES: Text between open and close tag, or next opening tag
-                    if (TagStart - 1 != -1)    //if the next tag does not immediately start
-                    {
-                        string TagText = html.Substring(0, TagStart);
+						switch (directiveType)
+						{
+							case HtmlDirectives.Doctype:
+								var dt = HtmlDoctype.Parse(directiveText);
+								if (tagStack.Any())
+									tagStack.Peek().Children.Add(dt);
+								else
+									roots.Add(dt);
+								break;
 
-                        currentTag.Tag += TagText;
-                        html = html.Remove(0, TagStart);  //Remove any tag text between start and end tag's
-                    }
+							case HtmlDirectives.ElementStart:
+								var ele = HtmlElement.Parse(directiveText);
+								if (tagStack.Any())
+									tagStack.Peek().Children.Add(ele);
+								else
+									roots.Add(ele);
 
-                    TagStart = html.IndexOf("<");   //Gets next tag start
-                    TagEnd = html.IndexOf(">");    //Gets next tag end
+								if (!directiveText.EndsWith("/>"))
+									tagStack.Push(ele);
+								break;
 
-                    //HANDLES: Ending the current tag
-                    if(IsClosingTag(TagStart, html))
-                    {
-                        if (html.Substring(TagStart, (TagEnd + 1) - TagStart) == "</" + currentTag.TagType + ">") //If this is the end of the current tag
-                        {
-                            currentTag.Tag += "</" + currentTag.TagType + ">";
-                            html = html.Remove(TagStart, (TagEnd + 1) - TagStart);  //Remove the closing tag
+							case HtmlDirectives.ElementEnd:
+								if (!tagStack.Any())
+									throw new InvalidDataException("Extra end tag");
 
-                            TagStart = html.IndexOf("<");   //Gets next tag start
-                            if (TagStart != -1)
-                            {
-                                if (IsClosingTag(TagStart, html))  //If next tag is a closing tag
-                                    MoveToNextTag(currentTag.Parent, html, false);
-                                else
-                                    MoveToNextTag(currentTag.Parent, html, true);
-                            }
-                            //WILL END IF: No more tags to parse
-                        }
-                        else
-                        {
-                            throw new Exception("Wrong end tag for: " + currentTag.TagType);
-                        }
-                    }
-                    else   //HANDLES: Starting a NEW child tag
-                    {
-                        MoveToNextTag(currentTag, html, true);  //This is a new tag: Create new tag element with parent and re-run parse
-                    }
-                }
-            }
-            return "HTML Validated successfully!";
-            //***Currently returns as many times as there are Html tags, need to stop after first return***
-        }
+								if (directiveText.Trim(' ', '<', '>', '/').Equals(tagStack.Peek().Tag, StringComparison.OrdinalIgnoreCase))
+									tagStack.Pop();
+								else
+									throw new InvalidDataException(string.Format("Unexpected end tag. Got: {0}. Expectect: </{1}>", directiveText,
+										tagStack.Peek().Tag));
+								break;
 
-        private bool IsClosingTag(int TagStart, string html)
-        {
-            if (html[TagStart + 1].ToString() == "/")
-                return true;
-            else
-                return false;
-        }
+						}
 
-        private void MoveToNextTag(HtmlElement currentTag, string html, bool isNewTag)
-        {
-            if (IsAnotherTag(html))   //If theres another HTML element
-            {
-                if (currentTag.Parent == null && isNewTag == false)   //If the current element has no parent (i.e current element is 'Html' tag)
-                    if(html == "</html>")   //HANDLES: the final closing html tag
-                        currentTag.Tag += html;
-                    else
-                        throw new Exception("There is an uneven amount of open and close tags");
-                else
-                {
-                    if (isNewTag == false)   //Not a new tag
-                        Parse(currentTag, html); //Make parent element new current element
-                    else   //New tag
-                    {
-                        HtmlElement NewTag = new HtmlElement    //Create new tag and set parent to Current
-                        {
-                            Parent = currentTag
-                        };
+						index = endIndex;
+					}
+				}
+			}
 
-                        currentTag.Children.Add(NewTag);    //Add new tag to current children
-                        Parse(NewTag, html);
-                    }
-                }
-            }
-            //WILL END: if no more new tags
-        }
-        private bool IsAnotherTag(string html)  //Looks for another '<' character
-        {
-            int NextTag = html.IndexOf("<");
+			if (tagStack.Any())
+				throw new InvalidDataException("Unclosed tags");
 
-            if (!NextTag.Equals(null))   //If theres another HTML element
-                return true;
-            else
-                return false;
-        }
+			return roots;
+		}
 
-        private string GetTagType(string html)  //Gets the string directly after the '<' character or 'TagType'
-        {
-            int TagStart = html.IndexOf("<");
-            int TagEnd = 0;
+		/// <summary>
+		/// Counts the unclosed tags on a line.
+		/// </summary>
+		/// <param name="line">The line.</param>
+		/// <returns></returns>
+		public static int CountUnclosedTags(string line)
+		{
+			return Regex.Matches(line, "<[^/]").Count - Regex.Matches(line, "(</)|(/>)").Count;
+		}
 
-            int CloseBracket = html.IndexOf(">");
-            int Space = html.IndexOf(" ");
+		/// <summary>
+		/// ERROR: Attempted to parse HTML with regular expression; system returned Cthulhu.
+		/// </summary>
+		private static readonly Dictionary<Regex, HtmlDirectives> Identifiers = new Dictionary<Regex, HtmlDirectives>()
+		{
+			// The \G anchor in .Net matches the previous match with Match objects or
+			// the start of the match attempt with IsMatch. This is what we're interested in.
+			{ new Regex(@"\G<!DOCTYPE .*?>", RegexOptions.IgnoreCase), HtmlDirectives.Doctype },
+			{ new Regex(@"\G<!--"), HtmlDirectives.Comment },
+			{ new Regex(@"\G<\w+([^>]*)?>"), HtmlDirectives.ElementStart },
+			{ new Regex(@"\G</\w+ *?>"), HtmlDirectives.ElementEnd }
+		};
 
-            if (Space == -1)
-                TagEnd = CloseBracket;
-            else if (CloseBracket == -1)
-                TagEnd = Space;
-            else if (Space < CloseBracket)
-                TagEnd = Space;
-            else if (CloseBracket < Space)
-                TagEnd = CloseBracket;
-            else
-                throw new Exception("Tag structure error");
+		/// <summary>
+		/// Identifies the html directive at the given index.
+		/// </summary>
+		/// <param name="line">The line.</param>
+		/// <param name="index">The index.</param>
+		/// <returns></returns>
+		/// <exception cref="System.IO.InvalidDataException">Invalid directive</exception>
+		private static HtmlDirectives IdentifyDirective(string line, int index)
+		{
+			var directive = Identifiers.Keys.FirstOrDefault(x => x.IsMatch(line, index));
+			if (directive == null)
+				throw new InvalidDataException("Invalid directive");
 
-            string TagType = html.Substring(TagStart + 1, (TagEnd - 1) - TagStart);
+			return Identifiers[directive];
+		}
 
-            TagType = ValidateTagType(TagType);   //Validate it's a valid html tag
-            return TagType;
-        }
-        private string ValidateTagType(string tag)
-        {
-
-            switch (tag)
-            {
-                case "!--":
-                case "a":
-                case "abbr":
-                case "acronym":
-                case "address":
-                case "applet":
-                case "area":
-                case "article":
-                case "aside":
-                case "audio":
-                case "b":
-                case "base":
-                case "basefront":
-                case "bdi":
-                case "bdo":
-                case "big":
-                case "blockquote":
-                case "body":
-                case "br":
-                case "button":
-                case "canvas":
-                case "caption":
-                case "center":
-                case "cite":
-                case "code":
-                case "col":
-                case "colgroup":
-                case "datalist":
-                case "dd":
-                case "del":
-                case "details":
-                case "dfn":
-                case "dialog":
-                case "dir":
-                case "div":
-                case "dl":
-                case "dt":
-                case "em":
-                case "embed":
-                case "fieldset":
-                case "figcaption":
-                case "figure":
-                case "font":
-                case "footer":
-                case "form":
-                case "frame":
-                case "frameset":
-                case "h1":
-                case "h2":
-                case "h3":
-                case "h4":
-                case "h5":
-                case "h6":
-                case "head":
-                case "header":
-                case "hgroup":
-                case "hr":
-                case "html":
-                case "i":
-                case "iframe":
-                case "img":
-                case "input":
-                case "ins":
-                case "kbd":
-                case "keygen":
-                case "label":
-                case "legend":
-                case "li":
-                case "link":
-                case "main":
-                case "map":
-                case "mark":
-                case "menu":
-                case "menuitem":
-                case "meta":
-                case "meter":
-                case "nav":
-                case "noframes":
-                case "noscript":
-                case "object":
-                case "ol":
-                case "optgroup":
-                case "option":
-                case "output":
-                case "p":
-                case "param":
-                case "pre":
-                case "progress":
-                case "q":
-                case "rp":
-                case "rt":
-                case "ruby":
-                case "s":
-                case "samp":
-                case "script":
-                case "section":
-                case "select":
-                case "small":
-                case "source":
-                case "span":
-                case "strike":
-                case "strong":
-                case "style":
-                case "sub":
-                case "summary":
-                case "sup":
-                case "table":
-                case "tbody":
-                case "td":
-                case "textarea":
-                case "tfoot":
-                case "th":
-                case "thread":
-                case "time":
-                case "title":
-                case "tr":
-                case "track":
-                case "tt":
-                case "u":
-                case "ul":
-                case "var":
-                case "video":
-                case "wbr":
-                    return tag;
-                default:
-                    //throw new Exception("Not A Valid HTML Tag Error");
-                    return tag;
-            }
-
-        }
-    }
+		enum HtmlDirectives
+		{
+			ElementStart,
+			ElementEnd,
+			Doctype,
+			Comment,
+			Text
+		}
+	}
 }
