@@ -4,13 +4,13 @@
         Title="HtmlEditorWindow" Height="350" Width="525">
     <DockPanel>
         <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
-            <MenuItem Header="_File" Click="OpenExample">
-                <MenuItem Header="_Open"  />
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open"  Click="Open" />
                 <Separator />
-                <MenuItem Header="_Validate"/>
+                <MenuItem Header="_Validate" Click="Validate" />
                 <Separator />
-                <MenuItem Header="_Save" />
-                <MenuItem Header="Save _As"/>
+                <MenuItem Header="_Save"  Click="Save" />
+                <MenuItem Header="Save _As"  Click="SaveAs" />
             </MenuItem>
             <MenuItem Header="_Edit" Click="OpenExample">
                 <MenuItem Header="_Bold" />

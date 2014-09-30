@@ -86,7 +86,7 @@ namespace HtmlEditor
 		/// Saves a single buffer, prompting for a filename if needed.
 		/// </summary>
 		/// <param name="buffer">The buffer</param>
-		public void SaveBuffer(Buffer buffer)
+		private void SaveBuffer(Buffer buffer)
 		{
 			if (buffer.Filename == null)
 				buffer.Save();
@@ -98,7 +98,7 @@ namespace HtmlEditor
 		/// Saves all provided buffers.
 		/// </summary>
 		/// <param name="buffers">The buffers.</param>
-		public void SaveAllBuffers(IEnumerable<Buffer> buffers)
+		private void SaveAllBuffers(IEnumerable<Buffer> buffers)
 		{
 			foreach (var b in buffers)
 				SaveBuffer(b);
@@ -111,27 +111,51 @@ namespace HtmlEditor
 			b.CodeEditor.Focus();
 		}
 
-		private void OpenExample(object sender, RoutedEventArgs e)
+		//EVENT HANDLERS
+        private void Open(object sender, RoutedEventArgs e)
 		{
-			var x = new[]
-			{
-				"<!DOCTYPE html>",
-				"<html>",
-				"<body>",
-				"Hi",
-				"<img src=\"foo\"/>",
-				"<!-- <p>/<p> -->",
-				"</body>",
-				"</html>"
-			};
-
-			var y = HtmlParser.Parse(x);
-
-			foreach (var b in OpenBuffers())
+         	foreach (var b in OpenBuffers())
 			{
 				AddBuffer(b);
 			}
+
+            Validate(sender, e);
 		}
+
+        private void Validate(object sender, RoutedEventArgs e)
+        {
+            Buffer buffer = (Buffer)CodeEditors.SelectedItem;
+
+            try
+            {
+                buffer.CodeEditor.ParseHtml();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
+            MessageBox.Show("You have valid HTML!");
+        }
+
+        private void Save(object sender, RoutedEventArgs e)
+        {
+            Buffer buffer = (Buffer)CodeEditors.SelectedItem;
+
+            SaveBuffer(buffer);
+
+            Validate(sender, e);
+        }
+
+        private void SaveAs(object sender, RoutedEventArgs e)
+        {
+            Buffer buffer = (Buffer)CodeEditors.SelectedItem;
+
+            SaveBufferAs(buffer);
+
+            Validate(sender, e);
+        }
 
         /// <summary>
         /// Opens prompt to create a new table
