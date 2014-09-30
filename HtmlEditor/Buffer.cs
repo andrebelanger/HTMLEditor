@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using HtmlEditor.CodeEditors;
 using HtmlEditor.CodeEditors.AvalonEditor;
+using HtmlEditor.CodeEditors.PlainEditor;
 
 namespace HtmlEditor
 {
@@ -15,7 +16,7 @@ namespace HtmlEditor
 
 		// Using a DependencyProperty as the backing store for CodeEditorType.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty CodeEditorTypeProperty =
-			DependencyProperty.Register("CodeEditorType", typeof(Type), typeof(Buffer), new PropertyMetadata(typeof(AvalonEditor)));
+			DependencyProperty.Register("CodeEditorType", typeof(Type), typeof(Buffer), new PropertyMetadata(typeof(PlainEditor)));
 
 		/// <summary>
 		/// Gets or sets the filename represented by this buffer.

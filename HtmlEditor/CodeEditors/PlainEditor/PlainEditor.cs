@@ -63,6 +63,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			AcceptsReturn = AcceptsTab = true;
 
 			AutoIndent = true;
+            AutoIndentAmount = 1;
 
 			// By default, Paragraphs have a 10-px border, so let's nuke that
 			var pStyle = new Style(typeof (Paragraph));

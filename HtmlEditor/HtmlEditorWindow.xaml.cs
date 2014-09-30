@@ -141,7 +141,7 @@ namespace HtmlEditor
         private void OpenTableWindow(object sender, RoutedEventArgs e)
         {
 
-            InsertTableWindow tableWindow = new InsertTableWindow();
+            InsertTableWindow tableWindow = new InsertTableWindow(this);
             tableWindow.Show();
         }
 
@@ -155,6 +155,28 @@ namespace HtmlEditor
 
             InsertListWindow listWindow = new InsertListWindow();
             listWindow.Show();
+        }
+
+        public void InsertTable(int rows, int columns)
+        {
+            // get current buffer
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+
+            var table = new List<string>{"<table>"};
+
+
+            for (int i = 0; i < rows; i++)
+            {
+                table.Add("<tr>");
+                for (int j = 0; j < columns; j++)
+                    table.Add("<td></td>");
+                table.Add("</tr>");
+            }
+
+            table.Add("</table>");
+
+            buffer.CodeEditor.Insert(table);
+
         }
 	}
 }
