@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using HtmlEditor.Parser;
 
 namespace HtmlEditor.CodeEditors.PlainEditor
 {
@@ -332,8 +333,10 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 
 					if (AutoIndent)
 					{
-						var autoDelta = AutoIndentAmount * _sizeOfTab;
-						// TODO: AUTO-INDENT by autoDelta * number of indents
+						var autoDelta = AutoIndentAmount * _sizeOfTab * HtmlParser.CountUnclosedTags(new TextRange(prevPara.ContentStart, prevPara.ContentEnd).Text);
+
+						if (autoDelta > 0)
+							para.Margin = new Thickness(para.Margin.Left + autoDelta, para.Margin.Top, para.Margin.Right, para.Margin.Bottom);
 					}
 				}
 			}

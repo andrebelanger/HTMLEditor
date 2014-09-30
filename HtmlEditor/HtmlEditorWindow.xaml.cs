@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -112,8 +113,19 @@ namespace HtmlEditor
 
 		private void OpenExample(object sender, RoutedEventArgs e)
 		{
-            HtmlParser parser = new HtmlParser();
-            parser.ParseHtml("<html><head><img /><div><h1/></div></head><body>Test<img /></body></html>");
+			var x = new[]
+			{
+				"<!DOCTYPE html>",
+				"<html>",
+				"<body>",
+				"Hi",
+				"<img src=\"foo\"/>",
+				"<!-- <p>/<p> -->",
+				"</body>",
+				"</html>"
+			};
+
+			var y = HtmlParser.Parse(x);
 
 			foreach (var b in OpenBuffers())
 			{

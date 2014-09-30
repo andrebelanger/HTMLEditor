@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HtmlEditor.Parser;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Indentation;
 
@@ -38,7 +39,9 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 				var segment = TextUtilities.GetWhitespaceAfter(document, pLine.Offset);
 				var indentation = document.GetText(segment);
 
-				// TODO: add AutoIndentAmount * NumberOfOpeningTags of \t chars here
+				var amount = HtmlParser.CountUnclosedTags(document.GetText(pLine));
+				if (amount > 0)
+					indentation += new string('\t', amount);
 
 				document.Replace(TextUtilities.GetWhitespaceAfter(document, line.Offset), indentation);
 			}
