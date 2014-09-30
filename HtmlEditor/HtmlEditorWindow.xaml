@@ -12,11 +12,11 @@
                 <MenuItem Header="_Save"  Click="Save" />
                 <MenuItem Header="Save _As"  Click="SaveAs" />
             </MenuItem>
-            <MenuItem Header="_Edit" Click="OpenExample">
+            <MenuItem Header="_Edit">
                 <MenuItem Header="_Bold" />
                 <MenuItem Header="_Italic" />
             </MenuItem>
-            <MenuItem Header="_View" Click="OpenExample">
+            <MenuItem Header="_View">
                 <MenuItem Header="_PlainText"/>
                 <MenuItem Header="_AvalonEdit"/>
             </MenuItem>

@@ -32,6 +32,8 @@ namespace HtmlEditor
 
 			foreach (var buff in filenames.Select(Buffer.Load))
 				AddBuffer(buff);
+
+            AddBuffer(new Buffer());
 		}
 
 		/// <summary>
@@ -88,7 +90,7 @@ namespace HtmlEditor
 		/// <param name="buffer">The buffer</param>
 		private void SaveBuffer(Buffer buffer)
 		{
-			if (buffer.Filename == null)
+			if (buffer.Filename != null)
 				buffer.Save();
 			else
 				SaveBufferAs(buffer);
