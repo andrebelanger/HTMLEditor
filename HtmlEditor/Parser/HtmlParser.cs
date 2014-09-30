@@ -10,6 +10,12 @@ namespace HtmlEditor.Parser
 {
 	public static class HtmlParser
 	{
+		/// <summary>
+		/// Parses the specified HTML.
+		/// </summary>
+		/// <param name="html">The HTML.</param>
+		/// <returns>A list of root level objects</returns>
+		/// <exception cref="System.IO.InvalidDataException">Error on line  + e.Index + :  + ex.Message</exception>
 		public static List<HtmlObject> Parse(IEnumerable<string> html)
 		{
 			using (var e = html.GetCountingEnumerator())
@@ -115,6 +121,11 @@ namespace HtmlEditor.Parser
 			return roots;
 		}
 
+		/// <summary>
+		/// Counts the unclosed tags on a line.
+		/// </summary>
+		/// <param name="line">The line.</param>
+		/// <returns></returns>
 		public static int CountUnclosedTags(string line)
 		{
 			return Regex.Matches(line, "<[^/]").Count - Regex.Matches(line, "(</)|(/>)").Count;
