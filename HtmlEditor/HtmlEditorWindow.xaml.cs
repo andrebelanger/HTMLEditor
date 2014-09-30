@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using HtmlEditor.CodeEditors.AvalonEditor;
 using Microsoft.Win32;
 using HtmlEditor.Parser;
+using System.ComponentModel;
 
 namespace HtmlEditor
 {
@@ -143,6 +144,18 @@ namespace HtmlEditor
 
             InsertListWindow listWindow = new InsertListWindow();
             listWindow.Show();
+        }
+
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (CodeEditors.Items.Cast<Buffer>().Any(b => b.IsDirty))
+            {
+                if (MessageBox.Show("You have unsaved changes! Are you sure you want to quit?", "Warning!", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 	}
 }
