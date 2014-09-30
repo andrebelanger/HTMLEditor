@@ -11,6 +11,8 @@ namespace HtmlEditor
 	{
 		private string _filename;
 
+		public bool IsDirty { get { return CodeEditor.IsDirty; } }
+
 		// Using a DependencyProperty as the backing store for CodeEditorType.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty CodeEditorTypeProperty =
 			DependencyProperty.Register("CodeEditorType", typeof(Type), typeof(Buffer), new PropertyMetadata(typeof(AvalonEditor)));
@@ -77,6 +79,7 @@ namespace HtmlEditor
 		public void Save(string filename)
 		{
 			File.WriteAllLines(filename, CodeEditor.Save());
+			CodeEditor.IsDirty = false;
 		}
 
 		/// <summary>
@@ -90,6 +93,8 @@ namespace HtmlEditor
 
 			b.Filename = filename;
 			b.CodeEditor.Load(File.ReadAllLines(filename));
+
+			b.CodeEditor.IsDirty = false;
 
 			return b;
 		}

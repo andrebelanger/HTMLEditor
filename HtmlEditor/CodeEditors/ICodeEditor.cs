@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace HtmlEditor.CodeEditors
 {
@@ -45,5 +46,15 @@ namespace HtmlEditor.CodeEditors
 		/// </summary>
 		/// <returns>The current lines</returns>
 		IEnumerable<string> Save();
+
+		bool IsDirty { get; set; }
+
+		void IndentLine();
+
+		void IndentSelection();
+
+		void IndentBuffer();
+
+		void Insert(IEnumerable<string> lines);
 	}
 }
