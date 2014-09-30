@@ -11,6 +11,8 @@ namespace HtmlEditor
 	{
 		private string _filename;
 
+		public bool IsDirty { get { return CodeEditor.IsDirty; } }
+
 		// Using a DependencyProperty as the backing store for CodeEditorType.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty CodeEditorTypeProperty =
 			DependencyProperty.Register("CodeEditorType", typeof(Type), typeof(Buffer), new PropertyMetadata(typeof(AvalonEditor)));
