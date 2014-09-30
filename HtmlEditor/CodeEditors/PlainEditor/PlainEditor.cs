@@ -354,5 +354,11 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			return new FormattedText("\t", CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
 				new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Black).Width;
 		}
+
+
+		public List<HtmlObject> ParseHtml()
+		{
+			return HtmlParser.Parse(Save());
+		}
 	}
 }
