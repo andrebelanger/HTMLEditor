@@ -179,7 +179,7 @@ namespace HtmlEditor
         private void OpenListWindow(object sender, RoutedEventArgs e)
         {
 
-            InsertListWindow listWindow = new InsertListWindow();
+            InsertListWindow listWindow = new InsertListWindow(this);
             listWindow.Show();
         }
 
@@ -203,6 +203,42 @@ namespace HtmlEditor
 
             buffer.CodeEditor.Insert(table);
 
+        }
+
+        public void InsertOrderedList(int items)
+        {
+            // get current buffer
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+
+            var table = new List<string> { "<ol>" };
+
+            for (int i = 0; i < items; i++)
+            {
+                table.Add("<li>");
+                table.Add("</li>");
+            }
+
+            table.Add("</ol>");
+
+            buffer.CodeEditor.Insert(table);
+        }
+
+        public void InsertUnorderedList(int items)
+        {
+            // get current buffer
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+
+            var table = new List<string> { "<ul>" };
+
+            for (int i = 0; i < items; i++)
+            {
+                table.Add("<li>");
+                table.Add("</li>");
+            }
+
+            table.Add("</ul>");
+
+            buffer.CodeEditor.Insert(table);
         }
 	}
 }

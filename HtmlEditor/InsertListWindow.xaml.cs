@@ -19,9 +19,30 @@ namespace HtmlEditor
     /// </summary>
     public partial class InsertListWindow : Window
     {
-        public InsertListWindow()
+        private HtmlEditorWindow _editorWindow;
+        public InsertListWindow(HtmlEditorWindow editorWindow)
         {
             InitializeComponent();
+            _editorWindow = editorWindow;
+        }
+
+        /// <summary>
+        /// Call the InsertList() function from HtmlEditorWindow
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InsertPressed(object sender, RoutedEventArgs e)
+        {
+            if(OrderedBox.IsChecked == true)
+                _editorWindow.InsertOrderedList(Convert.ToInt32(ColumnsBox.Text));
+            else
+                _editorWindow.InsertUnorderedList(Convert.ToInt32(ColumnsBox.Text));
+            
+        }
+
+        private void CancelPressed(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
