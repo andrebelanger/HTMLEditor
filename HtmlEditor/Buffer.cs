@@ -16,7 +16,7 @@ namespace HtmlEditor
 
 		// Using a DependencyProperty as the backing store for CodeEditorType.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty CodeEditorTypeProperty =
-			DependencyProperty.Register("CodeEditorType", typeof(Type), typeof(Buffer), new PropertyMetadata(typeof(PlainEditor)));
+			DependencyProperty.Register("CodeEditorType", typeof(Type), typeof(Buffer), new PropertyMetadata(typeof(AvalonEditor)));
 
 		/// <summary>
 		/// Gets or sets the filename represented by this buffer.
@@ -63,6 +63,7 @@ namespace HtmlEditor
 		{
 			CodeEditor = (ICodeEditor)Activator.CreateInstance(CodeEditorType);
 			Content = CodeEditor;
+			Header = "New file";
 		}
 
 		/// <summary>

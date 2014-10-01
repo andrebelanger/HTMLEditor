@@ -45,24 +45,15 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 		}
 
 		public bool IsDirty { get; set; }
-		public void IndentLine()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void IndentSelection()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void IndentBuffer()
-		{
-			throw new NotImplementedException();
-		}
 
 		public void Insert(IEnumerable<string> lines)
 		{
-			throw new NotImplementedException();
+			var start = CaretOffset;
+
+			TextArea.Document.Insert(start, string.Join(Environment.NewLine, lines));
+
+			TextArea.IndentationStrategy.IndentLines(Document, Document.GetLineByOffset(start).LineNumber,
+				Document.GetLineByOffset(CaretOffset).LineNumber);
 		}
 
 		private readonly FoldingManager _foldingManager;

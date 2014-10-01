@@ -57,7 +57,7 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 		{
 			for (var i = beginLine; i <= endLine; i++)
 			{
-				IndentLine(document, document.GetLineByNumber(beginLine));
+				IndentLine(document, document.GetLineByNumber(i));
 			}
 		}
 	}
