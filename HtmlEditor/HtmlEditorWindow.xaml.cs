@@ -254,6 +254,20 @@ namespace HtmlEditor
             buffer.CodeEditor.Insert(table);
         }
 
+        public void InsertBold(object sender, RoutedEventArgs e)
+        {
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+
+            buffer.CodeEditor.Insert(new [] {"<strong></strong>"});
+        }
+
+        public void InsertItalic(object sender, RoutedEventArgs e)
+        {
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+
+            buffer.CodeEditor.Insert(new []{"<em></em>"});
+        }
+
 		private void Plain_Checked(object sender, RoutedEventArgs e)
 		{
 			var b = (Buffer) CodeEditors.SelectedItem;

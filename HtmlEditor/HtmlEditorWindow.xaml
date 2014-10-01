@@ -14,8 +14,8 @@
                 <MenuItem Header="Save _As"  Click="SaveAs" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_Bold" />
-                <MenuItem Header="_Italic" />
+                <MenuItem Header="_Bold" Click="InsertBold"/>
+                <MenuItem Header="_Italic" Click="InsertItalic" />
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem x:Name="MenuPlain" Header="_Plain" IsCheckable="True" Checked="Plain_Checked"/>
