@@ -191,6 +191,13 @@ namespace HtmlEditor
             listWindow.Show();
         }
 
+
+        private void OpenSpacingWindow(object sender, RoutedEventArgs e)
+        {
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+            SpacingWindow spacingWindow = new SpacingWindow(this, buffer.CodeEditor.AutoIndentAmount);
+            spacingWindow.Show();
+        }
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (CodeEditors.Items.Cast<Buffer>().Any(b => b.IsDirty))
@@ -200,6 +207,13 @@ namespace HtmlEditor
                     e.Cancel = true;
                 }
             }
+        }
+
+        public void UpdateTabSpacing(int spaces)
+        {
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+
+            buffer.CodeEditor.AutoIndentAmount = spaces;
         }
 
         public void InsertTable(int rows, int columns)

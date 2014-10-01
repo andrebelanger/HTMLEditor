@@ -104,7 +104,7 @@ namespace HtmlEditor.Parser
 								if (directiveText.Trim(' ', '<', '>', '/').Equals(tagStack.Peek().Tag, StringComparison.OrdinalIgnoreCase))
 									tagStack.Pop();
 								else
-									throw new InvalidDataException(string.Format("Unexpected end tag. Got: {0}. Expectect: </{1}>", directiveText,
+									throw new InvalidDataException(string.Format("Unexpected end tag. Got: {0}. Expected: </{1}>", directiveText,
 										tagStack.Peek().Tag));
 								break;
 
