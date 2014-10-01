@@ -18,8 +18,8 @@
                 <MenuItem Header="_Italic" />
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="_PlainText"/>
-                <MenuItem Header="_AvalonEdit"/>
+                <MenuItem x:Name="MenuPlain" Header="_Plain" IsCheckable="True" Checked="Plain_Checked"/>
+                <MenuItem x:Name="MenuAvalon" Header="_AvalonEdit" IsCheckable="True" Checked="AvalonEdit_Checked" />
             </MenuItem>
             <MenuItem Header="_Insert">
                 <MenuItem Header="_Table" Click="OpenTableWindow"/>
@@ -27,7 +27,7 @@
             </MenuItem>
             <MenuItem Header="X" HorizontalAlignment="Right"/>
         </Menu>
-        <TabControl x:Name="CodeEditors">
+        <TabControl x:Name="CodeEditors" SelectionChanged="CodeEditors_SelectionChanged">
         </TabControl>
 	</DockPanel>
 </Window>

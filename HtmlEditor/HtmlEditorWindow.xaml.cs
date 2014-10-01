@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HtmlEditor.CodeEditors.AvalonEditor;
+using HtmlEditor.CodeEditors.PlainEditor;
 using Microsoft.Win32;
 using HtmlEditor.Parser;
 using System.ComponentModel;
@@ -252,5 +253,29 @@ namespace HtmlEditor
 
             buffer.CodeEditor.Insert(table);
         }
+
+		private void Plain_Checked(object sender, RoutedEventArgs e)
+		{
+			var b = (Buffer) CodeEditors.SelectedItem;
+
+			b.CodeEditorType = typeof (PlainEditor);
+			MenuAvalon.IsChecked = false;
+		}
+
+		private void AvalonEdit_Checked(object sender, RoutedEventArgs e)
+		{
+			var b = (Buffer)CodeEditors.SelectedItem;
+
+			b.CodeEditorType = typeof(AvalonEditor);
+			MenuPlain.IsChecked = false;
+		}
+
+		private void CodeEditors_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var b = CodeEditors.SelectedItem as Buffer;
+
+			MenuAvalon.IsChecked = b.CodeEditorType == typeof (AvalonEditor);
+			MenuPlain.IsChecked = b.CodeEditorType == typeof (PlainEditor);
+		}
 	}
 }

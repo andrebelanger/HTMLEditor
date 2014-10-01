@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using HtmlEditor.CodeEditors;
@@ -45,6 +46,10 @@ namespace HtmlEditor
 				if (!typeof (ICodeEditor).IsAssignableFrom(value))
 					throw new InvalidCastException(value.Name + " is not a child of ICodeEditor");
 				SetValue(CodeEditorTypeProperty, value);
+
+				var t = CodeEditor.Save().ToList();
+				Content = Activator.CreateInstance(value);
+				CodeEditor.Load(t);
 			}
 		}
 
@@ -54,15 +59,17 @@ namespace HtmlEditor
 		/// <value>
 		/// The code editor.
 		/// </value>
-		public ICodeEditor CodeEditor { get; private set; }
+		public ICodeEditor CodeEditor
+		{
+			get { return Content as ICodeEditor; }
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Buffer"/> class.
 		/// </summary>
 		public Buffer()
 		{
-			CodeEditor = (ICodeEditor)Activator.CreateInstance(CodeEditorType);
-			Content = CodeEditor;
+			Content = Activator.CreateInstance(CodeEditorType);
 			Header = "New file";
 		}
 

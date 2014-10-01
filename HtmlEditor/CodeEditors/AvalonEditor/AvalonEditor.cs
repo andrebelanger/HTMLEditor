@@ -77,6 +77,8 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 			AutoIndent = true;
 			AutoIndentAmount = 1;
 
+			ShowLineNumbers = true;
+
 			// Load our HTML highlighting
 			using (var s = typeof(AvalonEditor).Assembly.GetManifestResourceStream(typeof(AvalonEditor), "HtmlHighlighting.xml"))
 			{
