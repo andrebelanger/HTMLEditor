@@ -6,6 +6,7 @@
     <DockPanel>
         <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
             <MenuItem Header="_File">
+                <MenuItem Header="New"  Click="OpenNewBuffer"/>
                 <MenuItem Header="_Open"  Click="Open" />
                 <Separator />
                 <MenuItem Header="_Validate" Click="Validate" />
@@ -18,8 +19,11 @@
                 <MenuItem Header="_Italic" Click="InsertItalic" />
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem x:Name="MenuPlain" Header="_Plain" IsCheckable="True" Checked="Plain_Checked"/>
-                <MenuItem x:Name="MenuAvalon" Header="_AvalonEdit" IsCheckable="True" Checked="AvalonEdit_Checked" />
+                <MenuItem Header="Editor">
+                    <MenuItem x:Name="MenuPlain" Header="_Plain" IsCheckable="True" Checked="Plain_Checked"/>
+                    <MenuItem x:Name="MenuAvalon" Header="_AvalonEdit" IsCheckable="True" Checked="AvalonEdit_Checked" />
+                </MenuItem>
+                <MenuItem x:Name="MenuWordWrap" Header="_WordWrap" IsCheckable="True" Checked="WordWrap_Checked" Unchecked="WordWrap_Unchecked"/>
             </MenuItem>
             <MenuItem Header="_Insert">
                 <MenuItem Header="_Table" Click="OpenTableWindow"/>

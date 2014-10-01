@@ -126,6 +126,12 @@ namespace HtmlEditor
             Validate(sender, e);
 		}
 
+
+        private void OpenNewBuffer(object sender, RoutedEventArgs e)
+        {
+            AddBuffer(new Buffer());
+        }
+
         private void Validate(object sender, RoutedEventArgs e)
         {
             Buffer buffer = (Buffer)CodeEditors.SelectedItem;
@@ -254,14 +260,14 @@ namespace HtmlEditor
             buffer.CodeEditor.Insert(table);
         }
 
-        public void InsertBold(object sender, RoutedEventArgs e)
+        private void InsertBold(object sender, RoutedEventArgs e)
         {
             var buffer = (Buffer)CodeEditors.SelectedItem;
 
             buffer.CodeEditor.Insert(new [] {"<strong></strong>"});
         }
 
-        public void InsertItalic(object sender, RoutedEventArgs e)
+        private void InsertItalic(object sender, RoutedEventArgs e)
         {
             var buffer = (Buffer)CodeEditors.SelectedItem;
 
@@ -272,7 +278,7 @@ namespace HtmlEditor
 		{
 			var b = (Buffer) CodeEditors.SelectedItem;
 
-			b.CodeEditorType = typeof (PlainEditor);
+			b.CodeEditorType = typeof(PlainEditor);
 			MenuAvalon.IsChecked = false;
 		}
 
@@ -290,6 +296,21 @@ namespace HtmlEditor
 
 			MenuAvalon.IsChecked = b.CodeEditorType == typeof (AvalonEditor);
 			MenuPlain.IsChecked = b.CodeEditorType == typeof (PlainEditor);
+            MenuWordWrap.IsChecked = b.CodeEditor.WordWrap;
 		}
+
+        private void WordWrap_Checked(object sender, RoutedEventArgs e)
+        {
+            var b = (Buffer)CodeEditors.SelectedItem;
+
+            b.CodeEditor.WordWrap = true;
+        }
+
+        private void WordWrap_Unchecked(object sender, RoutedEventArgs e)
+        {
+            var b = (Buffer)CodeEditors.SelectedItem;
+
+            b.CodeEditor.WordWrap = false;
+        }
 	}
 }
