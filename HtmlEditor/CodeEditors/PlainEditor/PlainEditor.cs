@@ -153,21 +153,43 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// <param name="e">The event data.</param>
 		protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
-			var para = CaretPosition.Paragraph;
-
-			if (para != null && para.ContentStart.GetOffsetToPosition(CaretPosition) == 1) // If we're at the start of the line
+			if (Selection.IsEmpty)
 			{
-				var shift = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
+				var para = CaretPosition.Paragraph;
 
-				if (e.Key == Key.Tab && !shift)
+				if (para != null && para.ContentStart.GetOffsetToPosition(CaretPosition) == 1) // If we're at the start of the line
 				{
-					IndentBlock(para, 1);
-					e.Handled = true;
+					var shift = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
+
+					if (e.Key == Key.Tab && !shift)
+					{
+						IndentBlock(para, 1);
+						e.Handled = true;
+					}
+					else if ((e.Key == Key.Back && para.Margin.Left > 0) || (e.Key == Key.Tab && shift))
+					{
+						IndentBlock(para, -1);
+						e.Handled = true;
+					}
 				}
-				else if ((e.Key == Key.Back) || (e.Key == Key.Tab && shift))
+			}
+			else
+			{
+				foreach (var p in GetParagraphsBetweenPositions(Selection.Start, Selection.End))
 				{
-					IndentBlock(para, -1);
-					e.Handled = true;
+					var shift = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
+
+					if (e.Key == Key.Tab && !shift)
+					{
+						IndentBlock(p, 1);
+						e.Handled = true;
+					}
+					else if (e.Key == Key.Tab && shift)
+					{
+						IndentBlock(p, -1);
+						e.Handled = true;
+					}
+
 				}
 			}
 
