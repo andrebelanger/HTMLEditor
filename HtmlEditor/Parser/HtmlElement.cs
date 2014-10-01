@@ -12,8 +12,8 @@ namespace HtmlEditor.Parser
 	[DebuggerDisplay("<{Tag}>")]
     public class HtmlElement : HtmlObject
 	{
-		private static readonly Regex TagRegex = new Regex(@"<(?<tag>\w+)(?<attribs>( \w+=""[^>""]+"")*)/?>");
-		private static readonly Regex AttribRegex = new Regex(@"(?<key>\w+)=""(?<value>[^>""]+)""");
+		private static readonly Regex TagRegex = new Regex(@"<(?<tag>\w+)(?<attribs>( [\w\-]+=""[^>""]+"")*)( */)?>");
+		private static readonly Regex AttribRegex = new Regex(@"(?<key>[\w+\-])=""(?<value>[^>""]+)""");
 
 		public string Tag { get;  set; }
 		public ICollection<HtmlObject> Children { get; private set; }

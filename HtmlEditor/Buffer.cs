@@ -71,6 +71,7 @@ namespace HtmlEditor
 		{
 			Content = Activator.CreateInstance(CodeEditorType);
 			Header = "New file";
+            CodeEditor.IsDirty = false;
 		}
 
 		/// <summary>

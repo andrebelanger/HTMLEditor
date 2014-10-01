@@ -26,7 +26,7 @@ namespace HtmlEditor.Parser
 				}
 				catch (InvalidDataException ex)
 				{
-					throw new InvalidDataException("Error on line " + e.Index + ": " + ex.Message, ex);
+					throw new InvalidDataException("Error on line " + (e.Index + 1) + ": " + ex.Message, ex);
 				}
 			}
 		}
@@ -63,9 +63,12 @@ namespace HtmlEditor.Parser
 					{
 						do // Discard all text until the end of comment marker
 						{
-							index = lines.Current.IndexOf("-->", StringComparison.OrdinalIgnoreCase) + 3;
-							if (index != 0)
-								break;
+							index = lines.Current.IndexOf("-->", StringComparison.OrdinalIgnoreCase);
+                            if (index != -1)
+                            {
+                                index += 3;
+                                break;
+                            }
 						} while (lines.MoveNext());
 					}
 					else

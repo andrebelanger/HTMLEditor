@@ -200,7 +200,9 @@ namespace HtmlEditor
         }
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (CodeEditors.Items.Cast<Buffer>().Any(b => b.IsDirty))
+            var b = (Buffer)CodeEditors.SelectedItem;
+
+            if ( b.IsDirty )
             {
                 if (MessageBox.Show("You have unsaved changes! Are you sure you want to quit?", "Warning!", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 {
@@ -325,6 +327,27 @@ namespace HtmlEditor
             var b = (Buffer)CodeEditors.SelectedItem;
 
             b.CodeEditor.WordWrap = false;
+        }
+
+        private void CloseBuffer(object sender, RoutedEventArgs e)
+        {
+            var i = CodeEditors.SelectedIndex;
+            var b = CodeEditors.SelectedItem as Buffer;
+
+            if (b.IsDirty && MessageBox.Show("You have unsaved changes. Really close this buffer?", "Confirm close", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                return;
+
+            if(CodeEditors.Items.Count == 1)
+                AddBuffer(new Buffer());
+
+            if (i != 0)
+                i--;
+            else
+                i++;
+
+            CodeEditors.SelectedIndex = i;
+
+            CodeEditors.Items.Remove(b);
         }
 	}
 }

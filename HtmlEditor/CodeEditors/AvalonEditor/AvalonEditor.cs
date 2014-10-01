@@ -92,7 +92,9 @@ namespace HtmlEditor.CodeEditors.AvalonEditor
 				}
 			}
 
-			Task.Factory.StartNew(FoldingUpdateLoop);
+            IsDirty = false;
+
+            Task.Factory.StartNew(FoldingUpdateLoop);
 		}
 
 		/// <summary>
