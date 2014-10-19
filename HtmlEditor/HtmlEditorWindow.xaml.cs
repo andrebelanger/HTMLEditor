@@ -198,6 +198,13 @@ namespace HtmlEditor
             SpacingWindow spacingWindow = new SpacingWindow(this, buffer.CodeEditor.AutoIndentAmount);
             spacingWindow.Show();
         }
+
+        private void OpenATagWindow(object sender, RoutedEventArgs e)
+        {
+
+            InsertATagWindow aTagWindow = new InsertATagWindow(this);
+            aTagWindow.Show();
+        }
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             var b = (Buffer)CodeEditors.SelectedItem;
@@ -238,6 +245,14 @@ namespace HtmlEditor
 
             buffer.CodeEditor.Insert(table);
 
+        }
+
+        public void InsertATag(string href)
+        {
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+            var tag = new List<string>{"<a href=\"" + href + "\"></a>"};
+
+            buffer.CodeEditor.Insert(tag);
         }
 
         public void InsertOrderedList(int items)

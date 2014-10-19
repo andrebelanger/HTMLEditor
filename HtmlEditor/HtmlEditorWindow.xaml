@@ -29,6 +29,7 @@
             <MenuItem Header="_Insert">
                 <MenuItem Header="_Table" Click="OpenTableWindow"/>
                 <MenuItem Header="_List" Click="OpenListWindow"/>
+                <MenuItem Header="_A Tag" Click="OpenATagWindow"/>
             </MenuItem>
             <MenuItem Header="X" HorizontalAlignment="Right" Click="CloseBuffer" />
         </Menu>
