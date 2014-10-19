@@ -15,12 +15,17 @@ using System.Windows.Shapes;
 namespace HtmlEditor
 {
     /// <summary>
-    /// Interaction logic for InsertATagWindow.xaml
+    /// Interaction logic for InsertImageWindow.xaml
     /// </summary>
-    public partial class InsertATagWindow : Window
+    public partial class InsertImageWindow : Window
     {
+        public InsertImageWindow()
+        {
+            InitializeComponent();
+        }
+
         private HtmlEditorWindow _editorWindow;
-        public InsertATagWindow(HtmlEditorWindow editorWindow)
+        public InsertImageWindow(HtmlEditorWindow editorWindow)
         {
             InitializeComponent();
             _editorWindow = editorWindow;
@@ -33,7 +38,7 @@ namespace HtmlEditor
         /// <param name="e"></param>
         private void InsertPressed(object sender, RoutedEventArgs e)
         {
-            _editorWindow.InsertATag(hrefBox.Text);
+            _editorWindow.InsertImage(urlBox.Text);
             this.Close();
         }
 

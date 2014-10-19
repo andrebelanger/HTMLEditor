@@ -59,6 +59,9 @@
     <Compile Include="InsertATagWindow.xaml.cs">
       <DependentUpon>InsertATagWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InsertImageWindow.xaml.cs">
+      <DependentUpon>InsertImageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SpacingWindow.xaml.cs">
       <DependentUpon>SpacingWindow.xaml</DependentUpon>
     </Compile>
@@ -90,6 +93,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="InsertATagWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InsertImageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

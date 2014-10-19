@@ -201,9 +201,14 @@ namespace HtmlEditor
 
         private void OpenATagWindow(object sender, RoutedEventArgs e)
         {
-
             InsertATagWindow aTagWindow = new InsertATagWindow(this);
             aTagWindow.Show();
+        }
+
+        private void OpenImageWindow(object sender, RoutedEventArgs e)
+        {
+            InsertImageWindow imageWindow = new InsertImageWindow(this);
+            imageWindow.Show();
         }
         private void Window_Closing(object sender, CancelEventArgs e)
         {
@@ -251,6 +256,14 @@ namespace HtmlEditor
         {
             var buffer = (Buffer)CodeEditors.SelectedItem;
             var tag = new List<string>{"<a href=\"" + href + "\"></a>"};
+
+            buffer.CodeEditor.Insert(tag);
+        }
+
+        public void InsertImage(string url)
+        {
+            var buffer = (Buffer)CodeEditors.SelectedItem;
+            var tag = new List<string> { "<img src=\"" + url + "\" />" };
 
             buffer.CodeEditor.Insert(tag);
         }
