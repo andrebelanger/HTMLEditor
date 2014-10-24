@@ -20,10 +20,13 @@ namespace HtmlEditor
     public partial class InsertListWindow : Window
     {
         private HtmlEditorWindow _editorWindow;
+        private const int MIN_SIZE = 1;
+        private const int MAX_SIZE = 99;
         public InsertListWindow(HtmlEditorWindow editorWindow)
         {
             InitializeComponent();
             _editorWindow = editorWindow;
+            error.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -33,11 +36,27 @@ namespace HtmlEditor
         /// <param name="e"></param>
         private void InsertPressed(object sender, RoutedEventArgs e)
         {
-            if(OrderedBox.IsChecked == true)
-                _editorWindow.InsertOrderedList(Convert.ToInt32(ColumnsBox.Text));
-            else
-                _editorWindow.InsertUnorderedList(Convert.ToInt32(ColumnsBox.Text));
-            
+            try
+            {
+                int columns = Convert.ToInt32(ColumnsBox.Text);
+                if (columns < MIN_SIZE || columns > MAX_SIZE)
+                {
+                    throw new ArgumentOutOfRangeException("Number provided was out of the specified range");
+                }
+                if (OrderedBox.IsChecked == true)
+                {
+                    _editorWindow.InsertOrderedList(columns);
+                }
+                else
+                {
+                    _editorWindow.InsertUnorderedList(columns);
+                }
+                error.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                error.Visibility = Visibility.Visible;
+            }
         }
 
         private void CancelPressed(object sender, RoutedEventArgs e)
