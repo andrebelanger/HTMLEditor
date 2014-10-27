@@ -19,14 +19,16 @@
                 <MenuItem Header="_Bold" Click="InsertBold"/>
                 <MenuItem Header="_Italic" Click="InsertItalic" />
             </MenuItem>
-            <MenuItem Header="_View">
-                <MenuItem Header="Editor">
-                    <MenuItem x:Name="MenuPlain" Header="_Plain" IsCheckable="True" Checked="Plain_Checked"/>
-                    <MenuItem x:Name="MenuAvalon" Header="_AvalonEdit" IsCheckable="True" Checked="AvalonEdit_Checked" />
-                </MenuItem>
-                <MenuItem x:Name="MenuWordWrap" Header="_WordWrap" IsCheckable="True" Checked="WordWrap_Checked" Unchecked="WordWrap_Unchecked"/>
-            </MenuItem>
-            <MenuItem Header="_Insert">
+			<MenuItem Header="_View">
+				<MenuItem Header="Editor">
+					<MenuItem x:Name="MenuPlain" Header="_Plain" IsCheckable="True" Checked="Plain_Checked"/>
+					<MenuItem x:Name="MenuAvalon" Header="_AvalonEdit" IsCheckable="True" Checked="AvalonEdit_Checked" />
+				</MenuItem>
+				<MenuItem x:Name="OpenLinkview" Click="OpenLinkview_Click" Header="Open LinkView" />
+				<Separator/>
+				<MenuItem x:Name="MenuWordWrap" Header="_WordWrap" IsCheckable="True" Checked="WordWrap_Checked" Unchecked="WordWrap_Unchecked"/>
+			</MenuItem>
+			<MenuItem Header="_Insert">
                 <MenuItem Header="_Table" Click="OpenTableWindow"/>
                 <MenuItem Header="_List" Click="OpenListWindow"/>
                 <MenuItem Header="_A Tag" Click="OpenATagWindow"/>

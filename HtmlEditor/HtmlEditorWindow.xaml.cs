@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,6 +27,8 @@ namespace HtmlEditor
 	/// </summary>
 	public partial class HtmlEditorWindow : Window
 	{
+		public Buffer CurrentBuffer { get { return CodeEditors.SelectedItem as Buffer; } }
+
 		public HtmlEditorWindow()
 		{
 			InitializeComponent();
@@ -134,11 +137,9 @@ namespace HtmlEditor
 
         private void Validate(object sender, RoutedEventArgs e)
         {
-            Buffer buffer = (Buffer)CodeEditors.SelectedItem;
-
             try
             {
-                buffer.CodeEditor.ParseHtml();
+                CurrentBuffer.CodeEditor.ParseHtml();
             }
             catch (Exception ex)
             {
@@ -151,18 +152,14 @@ namespace HtmlEditor
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            Buffer buffer = (Buffer)CodeEditors.SelectedItem;
-
-            SaveBuffer(buffer);
+            SaveBuffer(CurrentBuffer);
 
             Validate(sender, e);
         }
 
         private void SaveAs(object sender, RoutedEventArgs e)
         {
-            Buffer buffer = (Buffer)CodeEditors.SelectedItem;
-
-            SaveBufferAs(buffer);
+            SaveBufferAs(CurrentBuffer);
 
             Validate(sender, e);
         }
@@ -186,7 +183,6 @@ namespace HtmlEditor
         /// <param name="e"></param>
         private void OpenListWindow(object sender, RoutedEventArgs e)
         {
-
             InsertListWindow listWindow = new InsertListWindow(this);
             listWindow.Show();
         }
@@ -194,8 +190,7 @@ namespace HtmlEditor
 
         private void OpenSpacingWindow(object sender, RoutedEventArgs e)
         {
-            var buffer = (Buffer)CodeEditors.SelectedItem;
-            SpacingWindow spacingWindow = new SpacingWindow(this, buffer.CodeEditor.AutoIndentAmount);
+            SpacingWindow spacingWindow = new SpacingWindow(this, CurrentBuffer.CodeEditor.AutoIndentAmount);
             spacingWindow.Show();
         }
 
@@ -225,16 +220,11 @@ namespace HtmlEditor
 
         public void UpdateTabSpacing(int spaces)
         {
-            var buffer = (Buffer)CodeEditors.SelectedItem;
-
-            buffer.CodeEditor.AutoIndentAmount = spaces;
+			CurrentBuffer.CodeEditor.AutoIndentAmount = spaces;
         }
 
         public void InsertTable(int rows, int columns)
         {
-            // get current buffer
-            var buffer = (Buffer)CodeEditors.SelectedItem;
-
             var table = new List<string>{"<table>"};
 
 
@@ -248,31 +238,29 @@ namespace HtmlEditor
 
             table.Add("</table>");
 
-            buffer.CodeEditor.Insert(table);
+            CurrentBuffer.CodeEditor.Insert(table);
 
         }
 
         public void InsertATag(string href)
         {
-            var buffer = (Buffer)CodeEditors.SelectedItem;
             var tag = new List<string>{"<a href=\"" + href + "\"></a>"};
 
-            buffer.CodeEditor.Insert(tag);
+            CurrentBuffer.CodeEditor.Insert(tag);
+
+	        CurrentBuffer.RefreshLinks();
         }
 
         public void InsertImage(string url)
         {
-            var buffer = (Buffer)CodeEditors.SelectedItem;
+
             var tag = new List<string> { "<img src=\"" + url + "\" />" };
 
-            buffer.CodeEditor.Insert(tag);
+            CurrentBuffer.CodeEditor.Insert(tag);
         }
 
         public void InsertOrderedList(int items)
         {
-            // get current buffer
-            var buffer = (Buffer)CodeEditors.SelectedItem;
-
             var table = new List<string> { "<ol>" };
 
             for (int i = 0; i < items; i++)
@@ -283,14 +271,11 @@ namespace HtmlEditor
 
             table.Add("</ol>");
 
-            buffer.CodeEditor.Insert(table);
+            CurrentBuffer.CodeEditor.Insert(table);
         }
 
         public void InsertUnorderedList(int items)
         {
-            // get current buffer
-            var buffer = (Buffer)CodeEditors.SelectedItem;
-
             var table = new List<string> { "<ul>" };
 
             for (int i = 0; i < items; i++)
@@ -301,21 +286,17 @@ namespace HtmlEditor
 
             table.Add("</ul>");
 
-            buffer.CodeEditor.Insert(table);
+            CurrentBuffer.CodeEditor.Insert(table);
         }
 
         private void InsertBold(object sender, RoutedEventArgs e)
         {
-            var buffer = (Buffer)CodeEditors.SelectedItem;
-
-            buffer.CodeEditor.Insert(new [] {"<strong></strong>"});
+            CurrentBuffer.CodeEditor.Insert(new [] {"<strong></strong>"});
         }
 
         private void InsertItalic(object sender, RoutedEventArgs e)
         {
-            var buffer = (Buffer)CodeEditors.SelectedItem;
-
-            buffer.CodeEditor.Insert(new []{"<em></em>"});
+            CurrentBuffer.CodeEditor.Insert(new []{"<em></em>"});
         }
 
 		private void Plain_Checked(object sender, RoutedEventArgs e)
@@ -377,5 +358,11 @@ namespace HtmlEditor
 
             CodeEditors.Items.Remove(b);
         }
+
+		private void OpenLinkview_Click(object sender, RoutedEventArgs e)
+		{
+			CurrentBuffer.RefreshLinks();
+			new LinkView(CurrentBuffer).Show();
+		}
 	}
 }

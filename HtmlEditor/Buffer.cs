@@ -1,17 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using HtmlEditor.CodeEditors;
 using HtmlEditor.CodeEditors.AvalonEditor;
 using HtmlEditor.CodeEditors.PlainEditor;
+using HtmlEditor.Parser;
 
 namespace HtmlEditor
 {
 	public class Buffer : TabItem
 	{
 		private string _filename;
+
+		public ObservableCollection<string> Links { get; private set; }
 
 		public bool IsDirty { get { return CodeEditor.IsDirty; } }
 
@@ -69,6 +75,8 @@ namespace HtmlEditor
 		/// </summary>
 		public Buffer()
 		{
+			Links = new ObservableCollection<string>();
+
 			Content = Activator.CreateInstance(CodeEditorType);
 			Header = "New file";
             CodeEditor.IsDirty = false;
@@ -107,6 +115,16 @@ namespace HtmlEditor
 			b.CodeEditor.IsDirty = false;
 
 			return b;
+		}
+
+		public void RefreshLinks()
+		{
+			var links = Regex.Matches(string.Join("", CodeEditor.Save()), @"<a [^>]*href=""(?<href>.+?)"".*?>", RegexOptions.IgnoreCase);
+
+			Links.Clear();
+
+			foreach (Match l in links)
+				Links.Add(l.Groups["href"].Value);
 		}
 	}
 }
