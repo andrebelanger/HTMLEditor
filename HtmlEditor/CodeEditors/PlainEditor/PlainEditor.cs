@@ -383,5 +383,14 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		{
 			return HtmlParser.Parse(Save());
 		}
+
+        /// <summary>
+        /// Collapses the selected HTML Element
+        /// </summary>
+        /// <param name="p">Selected paragraph containing beginning HTML element tag </param>
+        public void CollapseParagraph(Paragraph p)
+        {
+            Console.WriteLine("Paragraph Collapsed");
+        }
 	}
 }
