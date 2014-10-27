@@ -1,0 +1,31 @@
+﻿<Window x:Class="HtmlEditor.LinkView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="LinkView" Height="300" Width="300" x:Name="LinkViewWindow">
+    <DockPanel>
+		<ToolBarPanel Height="Auto" Orientation="Horizontal" DockPanel.Dock="Top">
+			<ToolBar Height="Auto" DockPanel.Dock="Top">
+				<Label>View Mode:</Label>
+				<ComboBox SelectedIndex="0" x:Name="ViewType" SelectionChanged="ViewType_SelectionChanged">
+					<ComboBoxItem>By Appearance</ComboBoxItem>
+					<ComboBoxItem>By Destination</ComboBoxItem>
+				</ComboBox>
+				<Separator/>
+				<Button x:Name="Refresh" Click="Refresh_Click">
+					<StackPanel Orientation="Horizontal">
+						<Image Source="/HtmlEditor;component/Images/refresh.ico" Width="16"/>
+						<TextBlock Margin="3,0,0,0">Refresh</TextBlock>
+					</StackPanel>
+				</Button>
+			</ToolBar>
+		</ToolBarPanel>
+		<ListView DockPanel.Dock="Bottom" DataContext="{Binding ElementName=LinkViewWindow, Path=Links}">
+			<ListView.View>
+				<GridView AllowsColumnReorder="True">
+					<GridViewColumn DisplayMemberBinding="{Binding Path=Item1}" Header="URL" Width="200"/>
+					<GridViewColumn DisplayMemberBinding="{Binding Path=Item2}" Header="Occurances" />
+				</GridView>
+			</ListView.View>
+		</ListView>
+    </DockPanel>
+</Window>

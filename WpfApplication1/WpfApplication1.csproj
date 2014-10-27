@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{06B30343-63EF-4669-ADDA-9C4C32951CBD}</ProjectGuid>
+    <ProjectGuid>{17A0C391-E792-439F-992B-69BF92C1FE9B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HtmlEditor</RootNamespace>
-    <AssemblyName>HtmlEditor</AssemblyName>
+    <RootNamespace>WpfApplication1</RootNamespace>
+    <AssemblyName>WpfApplication1</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.AvalonEdit">
-      <HintPath>..\packages\AvalonEdit.4.4.2.9744\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -54,21 +51,8 @@
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="InsertATagWindow.xaml.cs">
-      <DependentUpon>InsertATagWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="InsertImageWindow.xaml.cs">
-      <DependentUpon>InsertImageWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="LinkView.xaml.cs">
-      <DependentUpon>LinkView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SpacingWindow.xaml.cs">
-      <DependentUpon>SpacingWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="HtmlEditorWindow.xaml">
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -76,53 +60,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Buffer.cs" />
-    <Compile Include="CodeEditors\AvalonEditor\AvalonEditor.cs" />
-    <Compile Include="CodeEditors\AvalonEditor\HtmlIndentationStrategy.cs" />
-    <Compile Include="CodeEditors\ICodeEditor.cs" />
-    <Compile Include="CodeEditors\PlainEditor\PlainEditor.cs" />
-    <Compile Include="InsertListWindow.xaml.cs">
-      <DependentUpon>InsertListWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="InsertTableWindow.xaml.cs">
-      <DependentUpon>InsertTableWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Parser\CountingEnumerator.cs" />
-    <Compile Include="Parser\HtmlDoctype.cs" />
-    <Compile Include="Parser\HtmlElement.cs" />
-    <Compile Include="Parser\HtmlObject.cs" />
-    <Compile Include="HtmlEditorWindow.xaml.cs">
-      <DependentUpon>HtmlEditorWindow.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="InsertATagWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InsertImageWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InsertListWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InsertTableWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LinkView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SpacingWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Parser\HtmlParser.cs" />
-    <Compile Include="Parser\HtmlText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -140,8 +83,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="CodeEditors\AvalonEditor\HtmlHighlighting.xml" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -150,9 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\refresh.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
