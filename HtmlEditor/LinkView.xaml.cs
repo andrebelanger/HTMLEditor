@@ -22,14 +22,14 @@ namespace HtmlEditor
 	{
 		public ObservableCollection<Tuple<string, int>> Links { get; private set; }
 
-		private readonly ObservableCollection<string> _linkSource;
+		private readonly Buffer buff;
 
-		public LinkView(ObservableCollection<string> links)
+		public LinkView(Buffer b)
 		{
 			Links = new ObservableCollection<Tuple<string, int>>();
 
-			_linkSource = links;
-			_linkSource.CollectionChanged += _linkSource_CollectionChanged;
+			buff = b;
+			buff.Links.CollectionChanged += _linkSource_CollectionChanged;
 
 			InitializeComponent();
 		}
@@ -38,9 +38,9 @@ namespace HtmlEditor
 		{
 			var linkExp = ViewType.SelectedIndex == 0
 				? // By appearance
-				_linkSource.Select(l => Tuple.Create(l, 1))
+				buff.Links.Select(l => Tuple.Create(l, 1))
 				: // By dest
-				_linkSource.GroupBy(l => l)
+				buff.Links.GroupBy(l => l)
 					.Select(g => Tuple.Create(g.Key, g.Count()))
 					.OrderBy(t => t.Item1);
 
@@ -56,7 +56,7 @@ namespace HtmlEditor
 
 		private void Refresh_Click(object sender, RoutedEventArgs e)
 		{
-			UpdateLinks();
+			buff.RefreshLinks();
 		}
 
 		private void ViewType_SelectionChanged(object sender, SelectionChangedEventArgs e)
