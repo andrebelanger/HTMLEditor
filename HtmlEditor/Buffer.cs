@@ -11,7 +11,6 @@ using HtmlEditor.CodeEditors.AvalonEditor;
 using HtmlEditor.CodeEditors.PlainEditor;
 using HtmlEditor.Parser;
 using System.Collections.Generic;
->>>>>>> temp
 
 namespace HtmlEditor
 {
@@ -63,7 +62,7 @@ namespace HtmlEditor
 				var t = CodeEditor.Save().ToList();
 				Content = Activator.CreateInstance(value);
 
-                CodeEditor.TextChanged += new TextChangedEventHandler(bufferContentChanged);
+                //CodeEditor.TextChanged += new TextChangedEventHandler(bufferContentChanged);
 
 				CodeEditor.Load(t);
 			}

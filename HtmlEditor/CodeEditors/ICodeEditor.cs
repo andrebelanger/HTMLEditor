@@ -74,6 +74,6 @@ namespace HtmlEditor.CodeEditors
 		/// <returns>A list of root-level objects</returns>
 		List<HtmlObject> ParseHtml();
 
-        event TextChangedEventHandler TextChanged;
+        //event TextChangedEventHandler TextChanged;
 	}
 }
