@@ -74,6 +74,12 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			Document = new FlowDocument();
 
 			_sizeOfTab = GetTabSize();
+
+            // Initialiaze PlainEditor Specific ContextMenu
+            this.ContextMenu = new ContextMenu();
+            MenuItem mi = new MenuItem();
+            mi.Header = "Collapse Element";
+            this.ContextMenu.Items.Add(mi);
 		}
 
 		/// <summary>
