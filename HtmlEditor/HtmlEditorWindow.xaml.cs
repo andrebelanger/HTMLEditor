@@ -29,6 +29,13 @@ namespace HtmlEditor
 	{
 		public Buffer CurrentBuffer { get { return CodeEditors.SelectedItem as Buffer; } }
 
+
+        public static RoutedCommand NewKeyboardShortcut = new RoutedCommand();
+
+        public static RoutedCommand OpenKeyboardShortcut = new RoutedCommand();
+
+        public static RoutedCommand SaveKeyboardShortcut = new RoutedCommand();
+
 		public HtmlEditorWindow()
 		{
 			InitializeComponent();
@@ -364,5 +371,20 @@ namespace HtmlEditor
 			CurrentBuffer.RefreshLinks();
 			new LinkView(CurrentBuffer).Show();
 		}
+
+        private void NewShortcut(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenNewBuffer(sender, e);
+        }
+
+        private void OpenShortcut(object sender, ExecutedRoutedEventArgs e)
+        {
+            Open(sender, e);
+        }
+
+        private void SaveShortcut(object sender, ExecutedRoutedEventArgs e)
+        {
+            Save(sender, e);
+        }
 	}
 }

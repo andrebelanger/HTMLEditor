@@ -2,16 +2,37 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="HTML Editor" Height="350" Width="525"
-        Closing="Window_Closing">
+        xmlns:custom="clr-namespace:HtmlEditor"
+        Closing="Window_Closing"
+        x:Name="foo">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static custom:HtmlEditorWindow.NewKeyboardShortcut}"
+                        Executed="NewShortcut" />
+        <CommandBinding Command="{x:Static custom:HtmlEditorWindow.OpenKeyboardShortcut}"
+                        Executed="OpenShortcut" />
+        <CommandBinding Command="{x:Static custom:HtmlEditorWindow.SaveKeyboardShortcut}"
+                        Executed="SaveShortcut" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control"
+                    Key="N"
+                    Command="{x:Static custom:HtmlEditorWindow.NewKeyboardShortcut}" />
+        <KeyBinding Modifiers="Control"
+                    Key="O"
+                    Command="{x:Static custom:HtmlEditorWindow.OpenKeyboardShortcut}" />
+        <KeyBinding Modifiers="Control"
+                    Key="S"
+                    Command="{x:Static custom:HtmlEditorWindow.SaveKeyboardShortcut}" />
+    </Window.InputBindings>
     <DockPanel>
         <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="New"  Click="OpenNewBuffer"/>
-                <MenuItem Header="_Open"  Click="Open" />
+                <MenuItem Header="New"  Click="OpenNewBuffer" InputGestureText="Ctrl+N"/>
+                <MenuItem Header="_Open"  Click="Open" InputGestureText="Ctrl+O"/>
                 <Separator />
                 <MenuItem Header="_Validate" Click="Validate" />
                 <Separator />
-                <MenuItem Header="_Save"  Click="Save" />
+                <MenuItem Header="_Save"  Click="Save" InputGestureText="Ctrl+S" />
                 <MenuItem Header="Save _As"  Click="SaveAs" />
             </MenuItem>
             <MenuItem Header="_Edit">
