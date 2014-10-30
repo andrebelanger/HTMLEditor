@@ -137,7 +137,7 @@ namespace HtmlEditor
 				AddBuffer(b);
 			}
 
-            Validate(sender, e);
+            //Validate(sender, e);
 		}
 
 
@@ -165,14 +165,14 @@ namespace HtmlEditor
         {
             SaveBuffer(CurrentBuffer);
 
-            Validate(sender, e);
+            //Validate(sender, e);
         }
 
         private void SaveAs(object sender, RoutedEventArgs e)
         {
             SaveBufferAs(CurrentBuffer);
 
-            Validate(sender, e);
+            //Validate(sender, e);
         }
 
         /// <summary>
