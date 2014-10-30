@@ -12,6 +12,10 @@
                         Executed="OpenShortcut" />
         <CommandBinding Command="{x:Static custom:HtmlEditorWindow.SaveKeyboardShortcut}"
                         Executed="SaveShortcut" />
+        <CommandBinding Command="{x:Static custom:HtmlEditorWindow.UndoKeyboardShortcut}"
+                        Executed="UndoShortcut" />
+        <CommandBinding Command="{x:Static custom:HtmlEditorWindow.RedoKeyboardShortcut}"
+                        Executed="RedoShortcut" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Modifiers="Control"
@@ -23,6 +27,12 @@
         <KeyBinding Modifiers="Control"
                     Key="S"
                     Command="{x:Static custom:HtmlEditorWindow.SaveKeyboardShortcut}" />
+        <KeyBinding Modifiers="Control"
+                    Key="Z"
+                    Command="{x:Static custom:HtmlEditorWindow.UndoKeyboardShortcut}" />
+        <KeyBinding Modifiers="Control"
+                    Key="Y"
+                    Command="{x:Static custom:HtmlEditorWindow.RedoKeyboardShortcut}" />
     </Window.InputBindings>
     <DockPanel>
         <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
@@ -36,6 +46,9 @@
                 <MenuItem Header="Save _As"  Click="SaveAs" />
             </MenuItem>
             <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" Click="Undo" InputGestureText="Ctrl+Z" />
+                <MenuItem Header="_Redo" Click="Redo" InputGestureText="Ctrl+Y" />
+                <Separator />
                 <MenuItem Header="AutoIndent Spacing" Click="OpenSpacingWindow" />
                 <MenuItem Header="_Bold" Click="InsertBold"/>
                 <MenuItem Header="_Italic" Click="InsertItalic" />

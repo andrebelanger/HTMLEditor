@@ -68,6 +68,7 @@
     <Compile Include="SpacingWindow.xaml.cs">
       <DependentUpon>SpacingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StackObject.cs" />
     <Page Include="HtmlEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

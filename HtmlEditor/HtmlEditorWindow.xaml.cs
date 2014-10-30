@@ -36,6 +36,10 @@ namespace HtmlEditor
 
         public static RoutedCommand SaveKeyboardShortcut = new RoutedCommand();
 
+        public static RoutedCommand UndoKeyboardShortcut = new RoutedCommand();
+
+        public static RoutedCommand RedoKeyboardShortcut = new RoutedCommand();
+
 		public HtmlEditorWindow()
 		{
 			InitializeComponent();
@@ -372,6 +376,19 @@ namespace HtmlEditor
 			new LinkView(CurrentBuffer).Show();
 		}
 
+        //Place holder for Undo function.
+        private void Undo(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("You invoked the Undo command");
+        }
+        
+        //Place holder for Redo function.
+        private void Redo(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("You invoked the Redo command");
+        }
+
+
         private void NewShortcut(object sender, ExecutedRoutedEventArgs e)
         {
             OpenNewBuffer(sender, e);
@@ -385,6 +402,16 @@ namespace HtmlEditor
         private void SaveShortcut(object sender, ExecutedRoutedEventArgs e)
         {
             Save(sender, e);
+        }
+
+        private void UndoShortcut(object sender, ExecutedRoutedEventArgs e)
+        {
+            Undo(sender, e);
+        }
+
+        private void RedoShortcut(object sender, ExecutedRoutedEventArgs e)
+        {
+            Redo(sender, e);
         }
 	}
 }
