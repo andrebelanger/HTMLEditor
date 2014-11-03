@@ -8,9 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using HtmlEditor.CodeEditors;
 using HtmlEditor.CodeEditors.AvalonEditor;
-using HtmlEditor.CodeEditors.PlainEditor;
-using HtmlEditor.Parser;
-using System.Collections.Generic;
 
 namespace HtmlEditor
 {
@@ -18,10 +15,10 @@ namespace HtmlEditor
 	{
 		private string _filename;
 
-
 		public ObservableCollection<string> Links { get; private set; }
 
-
+		// TODO: Move into editors, to allow direct use of the Document properties
+		// This will mean changing the ICodeEditor interface to have an Undo() and Redo() Method
         Stack<StackObject> undoStack = new Stack<StackObject>();
         Stack<StackObject> redoStack = new Stack<StackObject>();
 

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HtmlEditor
+﻿namespace HtmlEditor
 {
+	// TODO: This class doesn't need to exist.
     public class StackObject
     {
         public StackObject(Buffer buffer)

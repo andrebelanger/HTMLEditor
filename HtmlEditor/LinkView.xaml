@@ -22,8 +22,8 @@
 		<ListView DockPanel.Dock="Bottom" ItemsSource="{Binding ElementName=LinkViewWindow, Path=Links, Mode=OneWay}">
 			<ListView.View>
 				<GridView AllowsColumnReorder="True">
-					<GridViewColumn DisplayMemberBinding="{Binding Path=Item1}" Header="URL" Width="200"/>
 					<GridViewColumn DisplayMemberBinding="{Binding Path=Item2}" Header="Occurances" />
+					<GridViewColumn DisplayMemberBinding="{Binding Path=Item1}" Header="URL" Width="200"/>
 				</GridView>
 			</ListView.View>
 		</ListView>

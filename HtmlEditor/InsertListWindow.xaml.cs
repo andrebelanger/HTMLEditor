@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HtmlEditor
 {
@@ -41,7 +30,7 @@ namespace HtmlEditor
                 int columns = Convert.ToInt32(ColumnsBox.Text);
                 if (columns < MIN_SIZE || columns > MAX_SIZE)
                 {
-                    throw new ArgumentOutOfRangeException("Number provided was out of the specified range");
+                    throw new FormatException("Number provided was out of the specified range");
                 }
                 if (OrderedBox.IsChecked == true)
                 {
@@ -53,7 +42,7 @@ namespace HtmlEditor
                 }
                 error.Visibility = Visibility.Hidden;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 error.Visibility = Visibility.Visible;
             }
@@ -61,7 +50,7 @@ namespace HtmlEditor
 
         private void CancelPressed(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

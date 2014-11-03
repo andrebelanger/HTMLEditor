@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Controls;
 using HtmlEditor.Parser;
 
 namespace HtmlEditor.CodeEditors
