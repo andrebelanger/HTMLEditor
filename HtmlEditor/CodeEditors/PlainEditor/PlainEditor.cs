@@ -77,6 +77,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
             this.ContextMenu = new ContextMenu();
             MenuItem mi = new MenuItem();
             mi.Header = "Collapse Element";
+            mi.Click += new RoutedEventHandler(CollapseParagraph);
             this.ContextMenu.Items.Add(mi);
 		}
 
@@ -392,9 +393,10 @@ namespace HtmlEditor.CodeEditors.PlainEditor
         /// Collapses the selected HTML Element
         /// </summary>
         /// <param name="p">Selected paragraph containing beginning HTML element tag </param>
-        public void CollapseParagraph(Paragraph p)
+        public void CollapseParagraph(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Paragraph Collapsed");
+            Console.WriteLine(CaretPosition.Paragraph);
+            //Console.WriteLine("Paragraph collapsed");
         }
 	}
 }
