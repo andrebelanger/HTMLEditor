@@ -407,24 +407,30 @@ namespace HtmlEditor.CodeEditors.PlainEditor
             if(_collapsedParas.ContainsKey(p))
             {
                 // TODO: Uncollapse
+                var previous = p;
                 foreach(Paragraph para in _collapsedParas[p])
                 {
-                    Document.Blocks.Add(para);
+                    Document.Blocks.InsertAfter(previous,para);
+                    previous = para;
                 }
+
+                // Remove Placeholder from Dictionary and Document
                 _collapsedParas.Remove(p);
+                Document.Blocks.Remove(p);
             }
             else
             {
-                _collapsedParas.Add(p, new List<Paragraph>());
+                // create placeholder paragraph
+                var placeholder = new Paragraph(new Run("..."));
 
-                var np = p.NextBlock as Paragraph;
+                _collapsedParas.Add(placeholder, new List<Paragraph>());
 
-                _collapsedParas[p].Add(np);
+               // var np = p.NextBlock as Paragraph;
 
-                //p.Inlines.Clear();
-                Document.Blocks.Remove(np);
-                //Console.WriteLine(CaretPosition.Paragraph);
-                //Console.WriteLine("Paragraph collapsed");
+                _collapsedParas[placeholder].Add(p);
+
+                Document.Blocks.InsertBefore(p,placeholder);
+                Document.Blocks.Remove(p);
             }
         }
 	}
