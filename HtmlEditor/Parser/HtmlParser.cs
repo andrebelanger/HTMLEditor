@@ -130,7 +130,35 @@ namespace HtmlEditor.Parser
 		public static int CountUnclosedTags(string line)
 		{
 			return Regex.Matches(line, "<[^/]").Count - Regex.Matches(line, "(</)|(/>)").Count;
-		} 
+		}
+
+
+        /// <summary>
+        /// Counts the amount of closing tags for a given tag in a line
+        /// </summary>
+        /// <param name="tag">Tag to be checked</param>
+        /// <param name="line">Line to be checked</param>
+        /// <returns></returns>
+        public static int CountOpeningTags(string tag, string line)
+        {
+            return Regex.Matches(line, @"<(" + tag + ")( [^>]+?)*?>", RegexOptions.IgnoreCase).Count;
+        }
+
+        /// <summary>
+        /// Counts the amount of closing tags for a given tag in a line
+        /// </summary>
+        /// <param name="tag">Tag to be checked</param>
+        /// <param name="line">Line to be checked</param>
+        /// <returns></returns>
+        public static int CountClosingTags(string tag, string line)
+        {
+            return Regex.Matches(line, "</"+tag+">",RegexOptions.IgnoreCase).Count;
+        }
+
+        public static string GetOpeningTag(string line)
+        {
+            return Regex.Match(line, @"<(?<tag>\w+)( [^>]+?)*?>").Groups["tag"].Value;
+        }
 
 		/// <summary>
 		/// ERROR: Attempted to parse HTML with regular expression; system returned Cthulhu.

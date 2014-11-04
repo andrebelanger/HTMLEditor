@@ -404,6 +404,9 @@ namespace HtmlEditor.CodeEditors.PlainEditor
         public void CollapseParagraph(object sender, RoutedEventArgs e)
         {
             var p = CaretPosition.Paragraph;
+
+            //Console.WriteLine(HtmlParser.GetOpeningTag(new TextRange(p.ContentStart, p.ContentEnd).Text));
+
             if(_collapsedParas.ContainsKey(p))
             {
                 // TODO: Uncollapse
@@ -421,16 +424,36 @@ namespace HtmlEditor.CodeEditors.PlainEditor
             else
             {
                 // create placeholder paragraph
-                var placeholder = new Paragraph(new Run("..."));
+                var tag = HtmlParser.GetOpeningTag(new TextRange(p.ContentStart, p.ContentEnd).Text);
+                var placeholder = new Paragraph(new Run("<" + tag + ">...")
+                {
+                    Foreground = Brushes.Gray
+                });
+
+                placeholder.Margin = p.Margin;
 
                 _collapsedParas.Add(placeholder, new List<Paragraph>());
 
-               // var np = p.NextBlock as Paragraph;
-
-                _collapsedParas[placeholder].Add(p);
+                //_collapsedParas[placeholder].Add(p);
 
                 Document.Blocks.InsertBefore(p,placeholder);
-                Document.Blocks.Remove(p);
+
+                var openTagCount = 0;
+                
+                var currentPara = p;
+                do
+                {
+                    var line = new TextRange(currentPara.ContentStart, currentPara.ContentEnd).Text;
+                    openTagCount += HtmlParser.CountOpeningTags(tag, line);
+                    openTagCount -= HtmlParser.CountClosingTags(tag, line);
+                    _collapsedParas[placeholder].Add(currentPara);
+
+                    var tempPara = currentPara;
+                    currentPara = currentPara.NextBlock as Paragraph;
+                    Document.Blocks.Remove(tempPara);
+
+                } while (openTagCount > 0);
+                //Document.Blocks.Remove(p);
             }
         }
 	}
