@@ -20,6 +20,9 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		private bool _reformatting;
 		private double _sizeOfTab;
 
+        public Stack<FlowDocument> undoStack = new Stack<FlowDocument>();
+        public Stack<FlowDocument> redoStack = new Stack<FlowDocument>();
+
 		/// <summary>
 		/// Gets or sets a value indicating whether word wrap is enabled.
 		/// </summary>
@@ -255,6 +258,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 				changedParas.AddRange(GetParagraphsBetweenPositions(start, end));
 			}
 
+            //Undo/Redo
+            undoStack.Push(Document);
 
 			// Now let's reformat a subset of them
 			// We'll do our filtering with LINQ's WHERE clause

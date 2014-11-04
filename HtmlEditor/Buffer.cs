@@ -17,11 +17,6 @@ namespace HtmlEditor
 
 		public ObservableCollection<string> Links { get; private set; }
 
-		// TODO: Move into editors, to allow direct use of the Document properties
-		// This will mean changing the ICodeEditor interface to have an Undo() and Redo() Method
-        Stack<StackObject> undoStack = new Stack<StackObject>();
-        Stack<StackObject> redoStack = new Stack<StackObject>();
-
 		public bool IsDirty { get { return CodeEditor.IsDirty; } }
 
 		// Using a DependencyProperty as the backing store for CodeEditorType.  This enables animation, styling, binding, etc...
@@ -58,8 +53,6 @@ namespace HtmlEditor
 
 				var t = CodeEditor.Save().ToList();
 				Content = Activator.CreateInstance(value);
-
-                //CodeEditor.TextChanged += new TextChangedEventHandler(bufferContentChanged);
 
 				CodeEditor.Load(t);
 			}
@@ -135,7 +128,7 @@ namespace HtmlEditor
 
         private void bufferContentChanged(object sender, EventArgs e)
         {
-            undoStack.Push(new StackObject(this));
+            undoStack.Push(this);
         }
 	}
 }
