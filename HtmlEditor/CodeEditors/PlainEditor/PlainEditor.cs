@@ -19,6 +19,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 	{
 		private bool _reformatting;
 		private double _sizeOfTab;
+        private Dictionary<Paragraph, List<Paragraph>> _collapsedParas;
 
         public Stack<FlowDocument> undoStack = new Stack<FlowDocument>();
         public Stack<FlowDocument> redoStack = new Stack<FlowDocument>();
@@ -75,6 +76,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			Document = new FlowDocument();
 
 			_sizeOfTab = GetTabSize();
+
+            _collapsedParas = new Dictionary<Paragraph, List<Paragraph>>();
 
             // Initialiaze PlainEditor Specific ContextMenu
             this.ContextMenu = new ContextMenu();
@@ -400,8 +403,29 @@ namespace HtmlEditor.CodeEditors.PlainEditor
         /// <param name="p">Selected paragraph containing beginning HTML element tag </param>
         public void CollapseParagraph(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(CaretPosition.Paragraph);
-            //Console.WriteLine("Paragraph collapsed");
+            var p = CaretPosition.Paragraph;
+            if(_collapsedParas.ContainsKey(p))
+            {
+                // TODO: Uncollapse
+                foreach(Paragraph para in _collapsedParas[p])
+                {
+                    Document.Blocks.Add(para);
+                }
+                _collapsedParas.Remove(p);
+            }
+            else
+            {
+                _collapsedParas.Add(p, new List<Paragraph>());
+
+                var np = p.NextBlock as Paragraph;
+
+                _collapsedParas[p].Add(np);
+
+                //p.Inlines.Clear();
+                Document.Blocks.Remove(np);
+                //Console.WriteLine(CaretPosition.Paragraph);
+                //Console.WriteLine("Paragraph collapsed");
+            }
         }
 	}
 }
