@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Controls;
 using HtmlEditor.Parser;
+using System.Windows.Controls;
 
 namespace HtmlEditor.CodeEditors
 {
@@ -73,7 +73,5 @@ namespace HtmlEditor.CodeEditors
 		/// </summary>
 		/// <returns>A list of root-level objects</returns>
 		List<HtmlObject> ParseHtml();
-
-        //event TextChangedEventHandler TextChanged;
 	}
 }

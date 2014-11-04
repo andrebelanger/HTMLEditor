@@ -70,13 +70,7 @@
             </MenuItem>
             <MenuItem Header="X" HorizontalAlignment="Right" Click="CloseBuffer" />
         </Menu>
-        <TabControl x:Name="CodeEditors" SelectionChanged="CodeEditors_SelectionChanged">
-            <TabControl.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Collapse Element" />
-                </ContextMenu>
-            </TabControl.ContextMenu>
-            
+        <TabControl x:Name="CodeEditors" SelectionChanged="CodeEditors_SelectionChanged">    
         </TabControl>
 	</DockPanel>
 </Window>

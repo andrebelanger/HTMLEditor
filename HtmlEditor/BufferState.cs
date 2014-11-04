@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HtmlEditor
 {
-    public class StackObject
+    public class BufferState
     {
-        public StackObject(Buffer buffer)
+        public BufferState(Buffer buffer)
         {
             this.Buffer = buffer;
         }

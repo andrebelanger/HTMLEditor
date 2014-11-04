@@ -8,9 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using HtmlEditor.CodeEditors;
 using HtmlEditor.CodeEditors.AvalonEditor;
-using HtmlEditor.CodeEditors.PlainEditor;
-using HtmlEditor.Parser;
-using System.Collections.Generic;
 
 namespace HtmlEditor
 {
@@ -18,12 +15,7 @@ namespace HtmlEditor
 	{
 		private string _filename;
 
-
 		public ObservableCollection<string> Links { get; private set; }
-
-
-        Stack<StackObject> undoStack = new Stack<StackObject>();
-        Stack<StackObject> redoStack = new Stack<StackObject>();
 
 		public bool IsDirty { get { return CodeEditor.IsDirty; } }
 
@@ -61,8 +53,6 @@ namespace HtmlEditor
 
 				var t = CodeEditor.Save().ToList();
 				Content = Activator.CreateInstance(value);
-
-                //CodeEditor.TextChanged += new TextChangedEventHandler(bufferContentChanged);
 
 				CodeEditor.Load(t);
 			}
@@ -138,7 +128,7 @@ namespace HtmlEditor
 
         private void bufferContentChanged(object sender, EventArgs e)
         {
-            undoStack.Push(new StackObject(this));
+            undoStack.Push(this);
         }
 	}
 }

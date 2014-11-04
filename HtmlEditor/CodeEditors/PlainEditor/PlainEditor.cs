@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -21,6 +19,10 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 	{
 		private bool _reformatting;
 		private double _sizeOfTab;
+        private Dictionary<Paragraph, List<Paragraph>> _collapsedParas;
+
+        public Stack<FlowDocument> undoStack = new Stack<FlowDocument>();
+        public Stack<FlowDocument> redoStack = new Stack<FlowDocument>();
 
 		/// <summary>
 		/// Gets or sets a value indicating whether word wrap is enabled.
@@ -75,10 +77,13 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 
 			_sizeOfTab = GetTabSize();
 
+            _collapsedParas = new Dictionary<Paragraph, List<Paragraph>>();
+
             // Initialiaze PlainEditor Specific ContextMenu
             this.ContextMenu = new ContextMenu();
             MenuItem mi = new MenuItem();
             mi.Header = "Collapse Element";
+            mi.Click += new RoutedEventHandler(CollapseParagraph);
             this.ContextMenu.Items.Add(mi);
 		}
 
@@ -256,6 +261,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 				changedParas.AddRange(GetParagraphsBetweenPositions(start, end));
 			}
 
+            //Undo/Redo
+            undoStack.Push(Document);
 
 			// Now let's reformat a subset of them
 			// We'll do our filtering with LINQ's WHERE clause
@@ -394,9 +401,31 @@ namespace HtmlEditor.CodeEditors.PlainEditor
         /// Collapses the selected HTML Element
         /// </summary>
         /// <param name="p">Selected paragraph containing beginning HTML element tag </param>
-        public void CollapseParagraph(Paragraph p)
+        public void CollapseParagraph(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Paragraph Collapsed");
+            var p = CaretPosition.Paragraph;
+            if(_collapsedParas.ContainsKey(p))
+            {
+                // TODO: Uncollapse
+                foreach(Paragraph para in _collapsedParas[p])
+                {
+                    Document.Blocks.Add(para);
+                }
+                _collapsedParas.Remove(p);
+            }
+            else
+            {
+                _collapsedParas.Add(p, new List<Paragraph>());
+
+                var np = p.NextBlock as Paragraph;
+
+                _collapsedParas[p].Add(np);
+
+                //p.Inlines.Clear();
+                Document.Blocks.Remove(np);
+                //Console.WriteLine(CaretPosition.Paragraph);
+                //Console.WriteLine("Paragraph collapsed");
+            }
         }
 	}
 }
