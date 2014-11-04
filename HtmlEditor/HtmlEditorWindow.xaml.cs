@@ -29,6 +29,8 @@ namespace HtmlEditor
 
         public static RoutedCommand RedoKeyboardShortcut = new RoutedCommand();
 
+        private const int MAX_BUFFERS = 20;
+
 		public HtmlEditorWindow()
 		{
 			InitializeComponent();
@@ -112,19 +114,34 @@ namespace HtmlEditor
 		}
 
 		private void AddBuffer(Buffer b)
-		{			
-			CodeEditors.SelectedIndex = CodeEditors.Items.Add(b);
-			b.Focus();
-			b.CodeEditor.Focus();
+		{
+            if (CodeEditors.Items.Count < MAX_BUFFERS)
+            {
+                CodeEditors.SelectedIndex = CodeEditors.Items.Add(b);
+                b.Focus();
+                b.CodeEditor.Focus();
+            }
+            else
+            {
+                MessageBox.Show("You have reached the maximum number of tabs allowed. PLease close one before opening another.");
+            }
 		}
 
 		//EVENT HANDLERS
         private void Open(object sender, RoutedEventArgs e)
 		{
-         	foreach (var b in OpenBuffers())
-			{
-				AddBuffer(b);
-			}
+            if (CodeEditors.Items.Count < MAX_BUFFERS)
+            {
+                foreach (var b in OpenBuffers())
+                {
+                    AddBuffer(b);
+                }
+            }
+            else
+            {
+                MessageBox.Show("You have reached the maximum number of tabs allowed. PLease close one before opening another.");
+            }
+
 
             //Validate(sender, e);
 		}
