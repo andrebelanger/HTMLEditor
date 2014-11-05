@@ -123,7 +123,7 @@ namespace HtmlEditor
             }
             else
             {
-                MessageBox.Show("You have reached the maximum number of tabs allowed. PLease close one before opening another.");
+                MessageBox.Show("You have reached the maximum number of tabs allowed. Please close one before opening another.");
             }
 		}
 
@@ -139,7 +139,7 @@ namespace HtmlEditor
             }
             else
             {
-                MessageBox.Show("You have reached the maximum number of tabs allowed. PLease close one before opening another.");
+                MessageBox.Show("You have reached the maximum number of tabs allowed. Please close one before opening another.");
             }
 
 
