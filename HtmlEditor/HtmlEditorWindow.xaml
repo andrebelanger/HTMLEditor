@@ -65,15 +65,19 @@
 				<MenuItem x:Name="MenuWordWrap" Header="_WordWrap" IsCheckable="True" Checked="WordWrap_Checked" Unchecked="WordWrap_Unchecked"/>
 			</MenuItem>
 			<MenuItem Header="_Insert">
-                <MenuItem Header="_Bold" Click="InsertBold"/>
-                <MenuItem Header="_Italic" Click="InsertItalic" />
+				<MenuItem Header="_Bold" Click="InsertBold"/>
+				<MenuItem Header="_Italic" Click="InsertItalic" />
 				<Separator />
-                <MenuItem Header="Lin_k" Click="OpenLinkWindow"/>
-                <MenuItem Header="I_mage" Click="OpenImageWindow"/>
+				<MenuItem Header="Lin_k" Click="OpenLinkWindow"/>
+				<MenuItem Header="I_mage" Click="OpenImageWindow"/>
 				<Separator />
-                <MenuItem Header="_Table" Click="OpenTableWindow"/>
-                <MenuItem Header="_List" Click="OpenListWindow"/>
-            </MenuItem>
+				<MenuItem Header="_Table" Click="OpenTableWindow"/>
+				<MenuItem Header="_List" Click="OpenListWindow"/>
+			</MenuItem>
+			<MenuItem Header="_Halp!!?">
+				<MenuItem Header="_Online Help" Click="OpenOnlineHelp" />
+				<MenuItem Header="_About" Click="OpenAbout" />
+			</MenuItem>
             <MenuItem Header="X" HorizontalAlignment="Right" Click="CloseBuffer" ToolTip="Close current buffer" />
         </Menu>
         <TabControl x:Name="CodeEditors" SelectionChanged="CodeEditors_SelectionChanged">    

@@ -425,5 +425,15 @@ namespace HtmlEditor
         {
             Redo(sender, e);
         }
+
+		private void OpenOnlineHelp(object sender, RoutedEventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://google.com");
+		}
+
+		private void OpenAbout(object sender, RoutedEventArgs e)
+		{
+			new AboutBox { Owner = this }.ShowDialog();
+		}
 	}
 }
