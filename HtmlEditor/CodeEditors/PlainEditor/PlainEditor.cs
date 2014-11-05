@@ -19,10 +19,10 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 	{
 		private bool _reformatting;
 		private double _sizeOfTab;
-        private Dictionary<Paragraph, List<Paragraph>> _collapsedParas;
+		private Dictionary<Paragraph, List<Paragraph>> _collapsedParas;
 
-        public Stack<FlowDocument> undoStack = new Stack<FlowDocument>();
-        public Stack<FlowDocument> redoStack = new Stack<FlowDocument>();
+		public Stack<FlowDocument> undoStack = new Stack<FlowDocument>();
+		public Stack<FlowDocument> redoStack = new Stack<FlowDocument>();
 
 		/// <summary>
 		/// Gets or sets a value indicating whether word wrap is enabled.
@@ -65,26 +65,26 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			AcceptsReturn = AcceptsTab = true;
 
 			AutoIndent = true;
-            AutoIndentAmount = 1;
+			AutoIndentAmount = 1;
 
 			// By default, Paragraphs have a 10-px border, so let's nuke that
-			var pStyle = new Style(typeof (Paragraph));
+			var pStyle = new Style(typeof(Paragraph));
 			pStyle.Setters.Add(new Setter(Block.MarginProperty, new Thickness(0)));
-			Resources.Add(typeof (Paragraph), pStyle);
+			Resources.Add(typeof(Paragraph), pStyle);
 
 			// Re-initialize the document so the above style is applied
 			Document = new FlowDocument();
 
 			_sizeOfTab = GetTabSize();
 
-            _collapsedParas = new Dictionary<Paragraph, List<Paragraph>>();
+			_collapsedParas = new Dictionary<Paragraph, List<Paragraph>>();
 
-            // Initialiaze PlainEditor Specific ContextMenu
-            this.ContextMenu = new ContextMenu();
-            MenuItem mi = new MenuItem();
-            mi.Header = "Collapse Element";
-            mi.Click += new RoutedEventHandler(CollapseParagraph);
-            this.ContextMenu.Items.Add(mi);
+			// Initialiaze PlainEditor Specific ContextMenu
+			this.ContextMenu = new ContextMenu();
+			MenuItem mi = new MenuItem();
+			mi.Header = "Collapse Element";
+			mi.Click += new RoutedEventHandler(CollapseParagraph);
+			this.ContextMenu.Items.Add(mi);
 		}
 
 		/// <summary>
@@ -120,9 +120,33 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// </returns>
 		public IEnumerable<string> Save()
 		{
-			return Document.Blocks
-				.OfType<Paragraph>()
+			var firstPara = Document.Blocks.OfType<Paragraph>().FirstOrDefault();
+
+			if (firstPara == null)
+				return new string[0];
+
+			return GetDocumentParagraphs(firstPara)
 				.Select(p => new string('\t', (int)(p.Margin.Left / _sizeOfTab)) + new TextRange(p.ContentStart, p.ContentEnd).Text);
+		}
+
+		/// <summary>
+		/// Gets the content paragraphs for the document. Replaces collapsed paras
+		/// with the content they represent.
+		/// </summary>
+		/// <param name="start">The start.</param>
+		/// <returns></returns>
+		private IEnumerable<Paragraph> GetDocumentParagraphs(Paragraph start)
+		{
+			do
+			{
+				if (_collapsedParas.ContainsKey(start)) // This is a placeholder. Let's look up the actual text
+					foreach (var collapsed in _collapsedParas[start])
+						foreach (var p in GetDocumentParagraphs(collapsed))
+							yield return p;
+				else
+					yield return start; // Normal paragraph
+
+			} while ((start = start.NextBlock as Paragraph) != null);
 		}
 
 		/// <summary>
@@ -135,9 +159,9 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		{
 			// When one of these triggers, we need to recalculate the size of our tabs
 			if (e.Property == Control.FontFamilyProperty || e.Property == Control.FontSizeProperty ||
-			    e.Property == Control.FontStretchProperty || e.Property == Control.FontStyleProperty ||
-			    e.Property == Control.FontWeightProperty || e.Property == FrameworkElement.StyleProperty ||
-			    e.Property == Control.TemplateProperty)
+				e.Property == Control.FontStretchProperty || e.Property == Control.FontStyleProperty ||
+				e.Property == Control.FontWeightProperty || e.Property == FrameworkElement.StyleProperty ||
+				e.Property == Control.TemplateProperty)
 			{
 				var newTabSize = GetTabSize();
 
@@ -261,8 +285,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 				changedParas.AddRange(GetParagraphsBetweenPositions(start, end));
 			}
 
-            //Undo/Redo
-            undoStack.Push(Document);
+			//Undo/Redo
+			undoStack.Push(Document);
 
 			// Now let's reformat a subset of them
 			// We'll do our filtering with LINQ's WHERE clause
@@ -397,64 +421,68 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			return HtmlParser.Parse(Save());
 		}
 
-        /// <summary>
-        /// Collapses the selected HTML Element
-        /// </summary>
-        /// <param name="p">Selected paragraph containing beginning HTML element tag </param>
-        public void CollapseParagraph(object sender, RoutedEventArgs e)
-        {
-            var p = CaretPosition.Paragraph;
+		/// <summary>
+		/// Collapses the selected HTML Element
+		/// </summary>
+		/// <param name="p">Selected paragraph containing beginning HTML element tag </param>
+		public void CollapseParagraph(object sender, RoutedEventArgs e)
+		{
+			var p = CaretPosition.Paragraph;
 
-            //Console.WriteLine(HtmlParser.GetOpeningTag(new TextRange(p.ContentStart, p.ContentEnd).Text));
+			//Console.WriteLine(HtmlParser.GetOpeningTag(new TextRange(p.ContentStart, p.ContentEnd).Text));
 
-            if(_collapsedParas.ContainsKey(p))
-            {
-                // TODO: Uncollapse
-                var previous = p;
-                foreach(Paragraph para in _collapsedParas[p])
-                {
-                    Document.Blocks.InsertAfter(previous,para);
-                    previous = para;
-                }
+			if (_collapsedParas.ContainsKey(p))
+			{
+				// TODO: Uncollapse
+				var previous = p;
+				foreach (Paragraph para in _collapsedParas[p])
+				{
+					Document.Blocks.InsertAfter(previous, para);
+					previous = para;
+				}
 
-                // Remove Placeholder from Dictionary and Document
-                _collapsedParas.Remove(p);
-                Document.Blocks.Remove(p);
-            }
-            else
-            {
-                // create placeholder paragraph
-                var tag = HtmlParser.GetOpeningTag(new TextRange(p.ContentStart, p.ContentEnd).Text);
-                var placeholder = new Paragraph(new Run("<" + tag + ">...")
-                {
-                    Foreground = Brushes.Gray
-                });
+				// Remove Placeholder from Dictionary and Document
+				_collapsedParas.Remove(p);
+				Document.Blocks.Remove(p);
+			}
+			else
+			{
+				// create placeholder paragraph
+				var tag = HtmlParser.GetOpeningTag(new TextRange(p.ContentStart, p.ContentEnd).Text);
+				var placeholder = new Paragraph(new Run("<" + tag + ">...")
+				{
+					Foreground = Brushes.Gray
+				});
 
-                placeholder.Margin = p.Margin;
+				placeholder.Margin = p.Margin;
 
-                _collapsedParas.Add(placeholder, new List<Paragraph>());
+				_collapsedParas.Add(placeholder, new List<Paragraph>());
 
-                //_collapsedParas[placeholder].Add(p);
 
-                Document.Blocks.InsertBefore(p,placeholder);
+				Document.Blocks.InsertBefore(p, placeholder);
 
-                var openTagCount = 0;
-                
-                var currentPara = p;
-                do
-                {
-                    var line = new TextRange(currentPara.ContentStart, currentPara.ContentEnd).Text;
-                    openTagCount += HtmlParser.CountOpeningTags(tag, line);
-                    openTagCount -= HtmlParser.CountClosingTags(tag, line);
-                    _collapsedParas[placeholder].Add(currentPara);
+				var openTagCount = 0;
 
-                    var tempPara = currentPara;
-                    currentPara = currentPara.NextBlock as Paragraph;
-                    Document.Blocks.Remove(tempPara);
+				var currentPara = p;
+				do
+				{
+					// If this paragraph is a placeholder, we don't want it to contribute to the tag count!
+					// Otherwise <div>... (collapsed) is treated as an unclosed div tag!!
+					if (!_collapsedParas.ContainsKey(currentPara))
+					{
+						var line = new TextRange(currentPara.ContentStart, currentPara.ContentEnd).Text;
+						openTagCount += HtmlParser.CountOpeningTags(tag, line);
+						openTagCount -= HtmlParser.CountClosingTags(tag, line);
+					}
 
-                } while (openTagCount > 0);
-                //Document.Blocks.Remove(p);
-            }
-        }
+					_collapsedParas[placeholder].Add(currentPara);
+
+					var tempPara = currentPara;
+					currentPara = currentPara.NextBlock as Paragraph;					
+					Document.Blocks.Remove(tempPara);
+
+				} while (openTagCount > 0 && currentPara != null);
+			}
+		}
 	}
 }
