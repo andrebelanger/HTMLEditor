@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AboutBox.xaml.cs">
+      <DependentUpon>AboutBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InsertLinkWindow.xaml.cs">
       <DependentUpon>InsertLinkWindow.xaml</DependentUpon>
     </Compile>
@@ -67,6 +70,10 @@
     <Compile Include="SpacingWindow.xaml.cs">
       <DependentUpon>SpacingWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="AboutBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="HtmlEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -158,6 +165,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon-blue.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pbj.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\click.gif" />
+    <Content Include="Images\pbj.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

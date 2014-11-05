@@ -382,22 +382,14 @@ namespace HtmlEditor
 			new LinkView(CurrentBuffer).Show();
 		}
 
-        //Place holder for Undo function.
         private void Undo(object sender, RoutedEventArgs e)
         {
-            /*CodeEditors.Document
-            b.redoStack.Push(b);
-            if(b.undoStack.Count > 0)
-                b = b.undoStack.Pop();*/
+	        CurrentBuffer.CodeEditor.Undo();
         }
         
-        //Place holder for Redo function.
         private void Redo(object sender, RoutedEventArgs e)
         {
-            /*var b = CodeEditors.SelectedItem as Buffer;
-            b.undoStack.Push(b);
-            if (b.redoStack.Count > 0)
-                b = b.redoStack.Pop();*/
+	        CurrentBuffer.CodeEditor.Redo();
         }
 
 
@@ -425,5 +417,15 @@ namespace HtmlEditor
         {
             Redo(sender, e);
         }
+
+		private void OpenOnlineHelp(object sender, RoutedEventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://google.com");
+		}
+
+		private void OpenAbout(object sender, RoutedEventArgs e)
+		{
+			new AboutBox { Owner = this }.ShowDialog();
+		}
 	}
 }
