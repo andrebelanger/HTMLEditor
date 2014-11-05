@@ -56,12 +56,6 @@ namespace HtmlEditor.CodeEditors
 		/// </value>
 		bool IsDirty { get; set; }
 
-		/*void IndentLine();
-
-		void IndentSelection();
-
-		void IndentBuffer();*/
-
 		/// <summary>
 		/// Inserts the specified lines.
 		/// </summary>
@@ -73,5 +67,17 @@ namespace HtmlEditor.CodeEditors
 		/// </summary>
 		/// <returns>A list of root-level objects</returns>
 		List<HtmlObject> ParseHtml();
+
+		/// <summary>
+		/// Undoes this instance.
+		/// </summary>
+		/// <returns>true if the redo operation was successful; otherwise, false. This method returns false if there is no undo command available (the undo stack is empty).</returns>
+		bool Undo();
+
+		/// <summary>
+		/// Redoes this instance.
+		/// </summary>
+		/// <returns>true if the redo operation was successful; otherwise, false. This method returns false if there is no undo command available (the undo stack is empty).</returns>
+		bool Redo();
 	}
 }

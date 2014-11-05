@@ -484,5 +484,29 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 				} while (openTagCount > 0 && currentPara != null);
 			}
 		}
+
+		/// <summary>
+		/// Undoes the most recent undo command. In other words, undoes the most recent undo unit on the undo stack.
+		/// </summary>
+		/// <returns>
+		/// true if the undo operation was successful; otherwise, false. This method returns false if the undo stack is empty.
+		/// </returns>
+		public new bool Undo()
+		{
+			// TODO: 
+			return true;
+		}
+
+		/// <summary>
+		/// Undoes the most recent undo command. In other words, redoes the most recent undo unit on the undo stack.
+		/// </summary>
+		/// <returns>
+		/// true if the redo operation was successful; otherwise, false. This method returns false if there is no undo command available (the undo stack is empty).
+		/// </returns>
+		public new bool Redo()
+		{
+			// TODO:
+			return true;
+		}
 	}
 }
