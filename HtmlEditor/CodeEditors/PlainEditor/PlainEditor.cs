@@ -81,7 +81,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 
 			// Initialiaze PlainEditor Specific ContextMenu
 			this.ContextMenu = new ContextMenu();
-			MenuItem mi = new MenuItem();
+			var mi = new MenuItem();
 			mi.Header = "Collapse Element";
 			mi.Click += new RoutedEventHandler(CollapseParagraph);
 			this.ContextMenu.Items.Add(mi);
@@ -435,7 +435,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			{
 				// TODO: Uncollapse
 				var previous = p;
-				foreach (Paragraph para in _collapsedParas[p])
+				foreach (var para in _collapsedParas[p])
 				{
 					Document.Blocks.InsertAfter(previous, para);
 					previous = para;

@@ -8,14 +8,16 @@ namespace HtmlEditor
     /// </summary>
     public partial class InsertTableWindow : Window
     {
-        private HtmlEditorWindow _editorWindow;
-        private const int MIN_SIZE = 1;
-        private const int MAX_SIZE = 99;
+        private readonly HtmlEditorWindow _editorWindow;
+        private const int MinSize = 1;
+        private const int MaxSize = 99;
+
         public InsertTableWindow(HtmlEditorWindow editorWindow)
         {
-            InitializeComponent();
+	        Owner = editorWindow;
             _editorWindow = editorWindow;
-            error.Visibility = Visibility.Hidden;
+
+            InitializeComponent();
         }
 
         /// <summary>
@@ -27,20 +29,22 @@ namespace HtmlEditor
         {
             try
             {
-                int rows = Convert.ToInt32(RowsBox.Text);
-                int columns = Convert.ToInt32(ColumnsBox.Text);
-                if (rows < MIN_SIZE || rows > MAX_SIZE || columns < MIN_SIZE || columns > MAX_SIZE)
-                {
-                    throw new FormatException("Number provided was out of the specified range");
-                }
-                _editorWindow.InsertTable(rows, columns);
-                error.Visibility = Visibility.Hidden;
-            }
-            catch (Exception)
-            {
-                error.Visibility = Visibility.Visible;
-            }
+                var rows = Convert.ToInt32(RowsBox.Text);
+                var columns = Convert.ToInt32(ColumnsBox.Text);
 
+                if (rows < MinSize || rows > MaxSize || columns < MinSize || columns > MaxSize)
+                {
+					throw new FormatException(string.Format("Number provided was out of the allowed range ({0}-{1})", MinSize, MaxSize));
+                }
+
+                _editorWindow.InsertTable(rows, columns);
+	            Close();
+            }
+            catch (Exception ex)
+            {
+	            Error.Text = ex.Message;
+                Error.Visibility = Visibility.Visible;
+            }
         }
 
         private void CancelPressed(object sender, RoutedEventArgs e)

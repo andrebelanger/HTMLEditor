@@ -8,17 +8,29 @@ namespace HtmlEditor
     /// </summary>
     public partial class SpacingWindow : Window
     {
-        private HtmlEditorWindow _editorWindow;
+        private readonly HtmlEditorWindow _editorWindow;
         public SpacingWindow(HtmlEditorWindow editorWindow, int spaces)
         {
-            InitializeComponent();
             _editorWindow = editorWindow;
-            SpacesBox.Text = Convert.ToString(spaces);
+	        Owner = editorWindow;
+
+            InitializeComponent();
+
+	        SpacesBox.Text = spaces.ToString();
         }
 
         private void ApplyPressed(object sender, RoutedEventArgs e)
         {
-            _editorWindow.UpdateTabSpacing(Convert.ToInt32(SpacesBox.Text));
+	        try
+	        {
+		        _editorWindow.UpdateTabSpacing(Convert.ToInt32(SpacesBox.Text));
+		        Close();
+	        }
+	        catch (Exception ex)
+	        {
+		        Error.Text = ex.Message;
+				Error.Visibility = Visibility.Visible;
+	        }
         }
     }
 }

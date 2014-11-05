@@ -1,14 +1,16 @@
 ﻿<Window x:Class="HtmlEditor.SpacingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Tab Spacing" Height="300" Width="300">
+        Title="Tab Spacing" Width="250" SizeToContent="Height" WindowStartupLocation="CenterOwner"
+		FocusManager.FocusedElement="{Binding ElementName=SpacesBox}">
     <StackPanel>
-        <StackPanel Margin="20,40,0,0" Orientation="Horizontal" Height="26" HorizontalAlignment="Left" Width="206">
-            <Label Content="# of Indents:"/>
-            <TextBox x:Name="SpacesBox" MinWidth="50" HorizontalAlignment="Right"/>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Number of Indents:"/>
+            <TextBox x:Name="SpacesBox" MinWidth="50" TabIndex="0"/>
         </StackPanel>
-        <StackPanel Margin="20" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Margin="10" x:Name="applyBtn" Width="80" Height="30" Content="Apply" Click="ApplyPressed"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Margin="5" x:Name="ApplyBtn" Width="80" Height="30" Content="Apply" Click="ApplyPressed" IsDefault="True" TabIndex="1" />
         </StackPanel>
+	<TextBlock Margin="5" x:Name="Error" TextWrapping="Wrap" Foreground="Red" TextAlignment="Center" Visibility="Collapsed" />
     </StackPanel>
 </Window>

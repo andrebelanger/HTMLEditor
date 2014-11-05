@@ -189,8 +189,8 @@ namespace HtmlEditor
         private void OpenTableWindow(object sender, RoutedEventArgs e)
         {
 
-            InsertTableWindow tableWindow = new InsertTableWindow(this);
-            tableWindow.Show();
+            var tableWindow = new InsertTableWindow(this);
+            tableWindow.ShowDialog();
         }
 
         /// <summary>
@@ -200,27 +200,27 @@ namespace HtmlEditor
         /// <param name="e"></param>
         private void OpenListWindow(object sender, RoutedEventArgs e)
         {
-            InsertListWindow listWindow = new InsertListWindow(this);
-            listWindow.Show();
+            var listWindow = new InsertListWindow(this);
+            listWindow.ShowDialog();
         }
 
 
         private void OpenSpacingWindow(object sender, RoutedEventArgs e)
         {
-            SpacingWindow spacingWindow = new SpacingWindow(this, CurrentBuffer.CodeEditor.AutoIndentAmount);
-            spacingWindow.Show();
+            var spacingWindow = new SpacingWindow(this, CurrentBuffer.CodeEditor.AutoIndentAmount);
+            spacingWindow.ShowDialog();
         }
 
-        private void OpenATagWindow(object sender, RoutedEventArgs e)
+        private void OpenLinkWindow(object sender, RoutedEventArgs e)
         {
-            InsertATagWindow aTagWindow = new InsertATagWindow(this);
-            aTagWindow.Show();
+            var aTagWindow = new InsertLinkWindow(this);
+            aTagWindow.ShowDialog();
         }
 
         private void OpenImageWindow(object sender, RoutedEventArgs e)
         {
-            InsertImageWindow imageWindow = new InsertImageWindow(this);
-            imageWindow.Show();
+            var imageWindow = new InsertImageWindow(this);
+	        imageWindow.ShowDialog();
         }
         private void Window_Closing(object sender, CancelEventArgs e)
         {
@@ -245,10 +245,10 @@ namespace HtmlEditor
             var table = new List<string>{"<table>"};
 
 
-            for (int i = 0; i < rows; i++)
+            for (var i = 0; i < rows; i++)
             {
                 table.Add("<tr>");
-                for (int j = 0; j < columns; j++)
+                for (var j = 0; j < columns; j++)
                     table.Add("<td></td>");
                 table.Add("</tr>");
             }
@@ -259,9 +259,9 @@ namespace HtmlEditor
 
         }
 
-        public void InsertATag(string href)
+        public void InsertLink(string href, string text)
         {
-            var tag = new List<string>{"<a href=\"" + href + "\"></a>"};
+            var tag = new List<string>{"<a href=\"" + href + "\">" + text + "</a>"};
 
             CurrentBuffer.CodeEditor.Insert(tag);
 
@@ -280,7 +280,7 @@ namespace HtmlEditor
         {
             var table = new List<string> { "<ol>" };
 
-            for (int i = 0; i < items; i++)
+            for (var i = 0; i < items; i++)
             {
                 table.Add("<li>");
                 table.Add("</li>");
@@ -295,7 +295,7 @@ namespace HtmlEditor
         {
             var table = new List<string> { "<ul>" };
 
-            for (int i = 0; i < items; i++)
+            for (var i = 0; i < items; i++)
             {
                 table.Add("<li>");
                 table.Add("</li>");

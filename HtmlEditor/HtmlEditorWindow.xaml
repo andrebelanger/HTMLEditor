@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="HTML Editor" Height="350" Width="525"
         xmlns:custom="clr-namespace:HtmlEditor"
-        Closing="Window_Closing"
-        x:Name="foo">
+        Closing="Window_Closing">
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static custom:HtmlEditorWindow.NewKeyboardShortcut}"
                         Executed="NewShortcut" />
@@ -36,7 +35,12 @@
     </Window.InputBindings>
     <DockPanel>
         <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
-            <MenuItem Header="_File">
+			<Menu.ItemsPanel>
+				<ItemsPanelTemplate>
+					<DockPanel HorizontalAlignment="Stretch"/>
+				</ItemsPanelTemplate>
+			</Menu.ItemsPanel>
+			<MenuItem Header="_File">
                 <MenuItem Header="New"  Click="OpenNewBuffer" InputGestureText="Ctrl+N"/>
                 <MenuItem Header="_Open"  Click="Open" InputGestureText="Ctrl+O"/>
                 <Separator />
@@ -50,8 +54,6 @@
                 <MenuItem Header="_Redo" Click="Redo" InputGestureText="Ctrl+Y" />
                 <Separator />
                 <MenuItem Header="AutoIndent Spacing" Click="OpenSpacingWindow" />
-                <MenuItem Header="_Bold" Click="InsertBold"/>
-                <MenuItem Header="_Italic" Click="InsertItalic" />
             </MenuItem>
 			<MenuItem Header="_View">
 				<MenuItem Header="Editor">
@@ -63,12 +65,16 @@
 				<MenuItem x:Name="MenuWordWrap" Header="_WordWrap" IsCheckable="True" Checked="WordWrap_Checked" Unchecked="WordWrap_Unchecked"/>
 			</MenuItem>
 			<MenuItem Header="_Insert">
+                <MenuItem Header="_Bold" Click="InsertBold"/>
+                <MenuItem Header="_Italic" Click="InsertItalic" />
+				<Separator />
+                <MenuItem Header="Lin_k" Click="OpenLinkWindow"/>
+                <MenuItem Header="I_mage" Click="OpenImageWindow"/>
+				<Separator />
                 <MenuItem Header="_Table" Click="OpenTableWindow"/>
                 <MenuItem Header="_List" Click="OpenListWindow"/>
-                <MenuItem Header="_A Tag" Click="OpenATagWindow"/>
-                <MenuItem Header="_Image" Click="OpenImageWindow"/>
             </MenuItem>
-            <MenuItem Header="X" HorizontalAlignment="Right" Click="CloseBuffer" />
+            <MenuItem Header="X" HorizontalAlignment="Right" Click="CloseBuffer" ToolTip="Close current buffer" />
         </Menu>
         <TabControl x:Name="CodeEditors" SelectionChanged="CodeEditors_SelectionChanged">    
         </TabControl>

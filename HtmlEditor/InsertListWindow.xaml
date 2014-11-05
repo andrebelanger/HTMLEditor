@@ -1,29 +1,31 @@
 ﻿<Window x:Class="HtmlEditor.InsertListWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Insert List" Height="300" Width="300">
-    <StackPanel>
-        <StackPanel Margin="20,40,0,0" Orientation="Horizontal" Height="26" HorizontalAlignment="Left" Width="206">
-            <Label Content="# of Items:"/>
-            <TextBox x:Name="ColumnsBox" MinWidth="50" HorizontalAlignment="Right"/>
-        </StackPanel>
-        <StackPanel Margin="0,20,0,0" Orientation="Horizontal" Width="236">
-            <Label Content="Ordered:"/>
-            <CheckBox Name="OrderedBox" Height="15" />
-        </StackPanel>
-        <StackPanel Margin="20" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Margin="10" x:Name="insertBtn" Width="80" Height="30" Content="Insert List" Click="InsertPressed"/>
-            <Button Margin="10" x:Name="cancelBtn" IsCancel="True" Height="30" Width="80" Content="Cancel" Click="CancelPressed" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Width="236">
-            <TextBlock
-                x:Name="error"
-                TextWrapping="Wrap"
-                Height="45"
-                Width="236"
-                Foreground="Red"
-                Text="Error: You must enter a valid, positive number from 1 to 99">
-            </TextBlock>
-        </StackPanel>
-    </StackPanel>
+        Title="Insert List" Width="250" SizeToContent="Height" WindowStartupLocation="CenterOwner"
+		FocusManager.FocusedElement="{Binding ElementName=ItemCountBox}">
+	<StackPanel Orientation="Vertical" Margin="5">
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Label Content="Number of Items:"/>
+			<TextBox Grid.Row="0" Grid.Column="1" x:Name="ItemCountBox" MinWidth="50" HorizontalAlignment="Left" TabIndex="0"/>
+			<Label Grid.Row="1" Grid.Column="0" Content="Ordered:"/>
+			<CheckBox Grid.Row="1" Grid.Column="1" Name="OrderedBox" Height="15" HorizontalAlignment="Left" TabIndex="1" />
+		</Grid>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*" />
+				<ColumnDefinition Width="1*" />
+			</Grid.ColumnDefinitions>
+			<Button Margin="10" x:Name="InsertBtn" Width="80" IsDefault="True" Height="30" Content="Insert List" Click="InsertPressed" TabIndex="3"/>
+			<Button Grid.Column="1" Margin="10" x:Name="CancelBtn" IsCancel="True" Height="30" Width="80" Content="Cancel" Click="CancelPressed" TabIndex="4" />
+		</Grid>
+		<TextBlock Margin="5" x:Name="Error" TextWrapping="Wrap" Foreground="Red" TextAlignment="Center" Visibility="Collapsed" />
+	</StackPanel>
 </Window>

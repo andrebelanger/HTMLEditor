@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.AvalonEdit">
       <HintPath>..\packages\AvalonEdit.4.4.2.9744\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
@@ -52,8 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="InsertATagWindow.xaml.cs">
-      <DependentUpon>InsertATagWindow.xaml</DependentUpon>
+    <Compile Include="InsertLinkWindow.xaml.cs">
+      <DependentUpon>InsertLinkWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="InsertImageWindow.xaml.cs">
       <DependentUpon>InsertImageWindow.xaml</DependentUpon>
@@ -91,7 +94,7 @@
       <DependentUpon>HtmlEditorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="InsertATagWindow.xaml">
+    <Page Include="InsertLinkWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -149,6 +152,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\refresh.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon-blue.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
