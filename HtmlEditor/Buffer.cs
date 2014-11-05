@@ -128,7 +128,6 @@ namespace HtmlEditor
 
         private void bufferContentChanged(object sender, EventArgs e)
         {
-            undoStack.Push(this);
         }
 	}
 }

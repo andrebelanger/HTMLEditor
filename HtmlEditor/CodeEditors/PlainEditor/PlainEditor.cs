@@ -33,7 +33,7 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		public bool WordWrap
 		{
 			get { return !Document.PageWidth.Equals(double.MaxValue); }
-			set { Document.PageWidth = value ? ViewportWidth : double.MaxValue; }
+			set { Document.PageWidth = value ? Width : 1000000d; } // 1000000 is the max a FlowDoc supports (as found in the decompiled assembly)
 		}
 
 		/// <summary>
