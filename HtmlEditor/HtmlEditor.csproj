@@ -58,6 +58,7 @@
     <Compile Include="AboutBox.xaml.cs">
       <DependentUpon>AboutBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InsertWindow.cs" />
     <Compile Include="InsertLinkWindow.xaml.cs">
       <DependentUpon>InsertLinkWindow.xaml</DependentUpon>
     </Compile>

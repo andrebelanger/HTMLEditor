@@ -118,7 +118,7 @@ namespace HtmlEditor
 
 		public void RefreshLinks()
 		{
-			var links = Regex.Matches(string.Join("", CodeEditor.Save()), @"<a [^>]*href=""(?<href>.+?)"".*?>", RegexOptions.IgnoreCase);
+			var links = Regex.Matches(string.Join("", CodeEditor.Save()), @"<a [^>]*href=""(?<href>.*?)"".*?>", RegexOptions.IgnoreCase);
 
 			Links.Clear();
 

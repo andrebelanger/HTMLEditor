@@ -1,18 +1,15 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 
 namespace HtmlEditor
 {
     /// <summary>
     /// Interaction logic for InsertLinkWindow.xaml
     /// </summary>
-    public partial class InsertLinkWindow : Window
+    public partial class InsertLinkWindow : InsertWindow
     {
-        private readonly HtmlEditorWindow _editorWindow;
-        public InsertLinkWindow(HtmlEditorWindow editorWindow)
+        public InsertLinkWindow()
         {
-            _editorWindow = editorWindow;
-	        Owner = editorWindow;
-
             InitializeComponent();
         }
 
@@ -23,7 +20,7 @@ namespace HtmlEditor
         /// <param name="e"></param>
         private void InsertPressed(object sender, RoutedEventArgs e)
         {
-            _editorWindow.InsertLink(HrefBox.Text, LinkTextBox.Text);
+            Text = new List<string> { "<a href=\"" + HrefBox.Text + "\">" + LinkTextBox.Text + "</a>" };
             Close();
         }
 

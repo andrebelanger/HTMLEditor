@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace HtmlEditor
@@ -6,17 +7,13 @@ namespace HtmlEditor
     /// <summary>
     /// Interaction logic for InsertListWindow.xaml
     /// </summary>
-    public partial class InsertListWindow : Window
+    public partial class InsertListWindow : InsertWindow
     {
-        private readonly HtmlEditorWindow _editorWindow;
         private const int MinSize = 1;
         private const int MaxSize = 99;
 
-        public InsertListWindow(HtmlEditorWindow editorWindow)
+        public InsertListWindow()
         {
-	        Owner = editorWindow;
-            _editorWindow = editorWindow;
-
             InitializeComponent();
         }
 
@@ -36,14 +33,18 @@ namespace HtmlEditor
                     throw new FormatException(string.Format("Number provided was out of the allowed range ({0}-{1})", MinSize, MaxSize));
                 }
 
-                if (OrderedBox.IsChecked == true)
+                var table = new List<string>();
+
+                table.Add(OrderedBox.IsChecked == true ? "<ol>" : "<ul>");
+
+                for (var i = 0; i < columns; i++)
                 {
-                    _editorWindow.InsertOrderedList(columns);
+                    table.Add("<li></li>");
                 }
-                else
-                {
-                    _editorWindow.InsertUnorderedList(columns);
-                }
+
+                table.Add(OrderedBox.IsChecked == true ? "</ol>" : "</ul>");
+
+                Text = table;
 
 	            Close();
             }

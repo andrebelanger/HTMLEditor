@@ -18,7 +18,6 @@ namespace HtmlEditor
 	{
 		public Buffer CurrentBuffer { get { return CodeEditors.SelectedItem as Buffer; } }
 
-
         public static RoutedCommand NewKeyboardShortcut = new RoutedCommand();
 
         public static RoutedCommand OpenKeyboardShortcut = new RoutedCommand();
@@ -188,9 +187,7 @@ namespace HtmlEditor
         /// <param name="e"></param>
         private void OpenTableWindow(object sender, RoutedEventArgs e)
         {
-
-            var tableWindow = new InsertTableWindow(this);
-            tableWindow.ShowDialog();
+            ShowInputWindow(typeof(InsertTableWindow));
         }
 
         /// <summary>
@@ -200,10 +197,8 @@ namespace HtmlEditor
         /// <param name="e"></param>
         private void OpenListWindow(object sender, RoutedEventArgs e)
         {
-            var listWindow = new InsertListWindow(this);
-            listWindow.ShowDialog();
+            ShowInputWindow(typeof(InsertListWindow));
         }
-
 
         private void OpenSpacingWindow(object sender, RoutedEventArgs e)
         {
@@ -213,15 +208,27 @@ namespace HtmlEditor
 
         private void OpenLinkWindow(object sender, RoutedEventArgs e)
         {
-            var aTagWindow = new InsertLinkWindow(this);
-            aTagWindow.ShowDialog();
+            ShowInputWindow(typeof(InsertLinkWindow));
         }
 
         private void OpenImageWindow(object sender, RoutedEventArgs e)
         {
-            var imageWindow = new InsertImageWindow(this);
-	        imageWindow.ShowDialog();
+            ShowInputWindow(typeof(InsertImageWindow));
         }
+
+        private void ShowInputWindow(Type t)
+        {
+            var w = (InsertWindow)Activator.CreateInstance(t);
+
+            w.Owner = this;
+
+            w.ShowDialog();
+
+            CurrentBuffer.CodeEditor.Insert(w.Text);
+
+            CurrentBuffer.RefreshLinks();
+        }
+
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             var b = (Buffer)CodeEditors.SelectedItem;
@@ -239,73 +246,7 @@ namespace HtmlEditor
         {
 			CurrentBuffer.CodeEditor.AutoIndentAmount = spaces;
         }
-
-        public void InsertTable(int rows, int columns)
-        {
-            var table = new List<string>{"<table>"};
-
-
-            for (var i = 0; i < rows; i++)
-            {
-                table.Add("<tr>");
-                for (var j = 0; j < columns; j++)
-                    table.Add("<td></td>");
-                table.Add("</tr>");
-            }
-
-            table.Add("</table>");
-
-            CurrentBuffer.CodeEditor.Insert(table);
-
-        }
-
-        public void InsertLink(string href, string text)
-        {
-            var tag = new List<string>{"<a href=\"" + href + "\">" + text + "</a>"};
-
-            CurrentBuffer.CodeEditor.Insert(tag);
-
-	        CurrentBuffer.RefreshLinks();
-        }
-
-        public void InsertImage(string url)
-        {
-
-            var tag = new List<string> { "<img src=\"" + url + "\" />" };
-
-            CurrentBuffer.CodeEditor.Insert(tag);
-        }
-
-        public void InsertOrderedList(int items)
-        {
-            var table = new List<string> { "<ol>" };
-
-            for (var i = 0; i < items; i++)
-            {
-                table.Add("<li>");
-                table.Add("</li>");
-            }
-
-            table.Add("</ol>");
-
-            CurrentBuffer.CodeEditor.Insert(table);
-        }
-
-        public void InsertUnorderedList(int items)
-        {
-            var table = new List<string> { "<ul>" };
-
-            for (var i = 0; i < items; i++)
-            {
-                table.Add("<li>");
-                table.Add("</li>");
-            }
-
-            table.Add("</ul>");
-
-            CurrentBuffer.CodeEditor.Insert(table);
-        }
-
+        
         private void InsertBold(object sender, RoutedEventArgs e)
         {
             CurrentBuffer.CodeEditor.Insert(new [] {"<strong></strong>"});

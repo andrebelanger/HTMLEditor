@@ -4,21 +4,17 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using System.Collections.Generic;
 
 namespace HtmlEditor
 {
 	/// <summary>
 	/// Interaction logic for InsertImageWindow.xaml
 	/// </summary>
-	public partial class InsertImageWindow : Window
+	public partial class InsertImageWindow : InsertWindow
 	{
-		private readonly HtmlEditorWindow _editorWindow;
-
-		public InsertImageWindow(HtmlEditorWindow editorWindow)
+		public InsertImageWindow()
 		{
-			Owner = editorWindow;
-			_editorWindow = editorWindow;
-
 			InitializeComponent();
 		}
 
@@ -29,7 +25,7 @@ namespace HtmlEditor
 		/// <param name="e"></param>
 		private void InsertPressed(object sender, RoutedEventArgs e)
 		{
-			_editorWindow.InsertImage(ImgPath.Text);
+            Text = new List<string> { "<img src=\"" + ImgPath.Text + "\" />" };
 			Close();
 		}
 
@@ -52,6 +48,5 @@ namespace HtmlEditor
 				ImgPath.Text = fbd.FileName;
 			}
 		}
-
 	}
 }

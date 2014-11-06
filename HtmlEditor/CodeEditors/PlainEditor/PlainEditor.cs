@@ -9,6 +9,11 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using HtmlEditor.Parser;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Windows.Markup;
+using System.Xml;
 
 namespace HtmlEditor.CodeEditors.PlainEditor
 {
@@ -21,8 +26,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		private double _sizeOfTab;
 		private Dictionary<Paragraph, List<Paragraph>> _collapsedParas;
 
-		public Stack<FlowDocument> undoStack = new Stack<FlowDocument>();
-		public Stack<FlowDocument> redoStack = new Stack<FlowDocument>();
+        public Stack<string> undoStack = new Stack<string>();
+        public Stack<string> redoStack = new Stack<string>();
 
 		/// <summary>
 		/// Gets or sets a value indicating whether word wrap is enabled.
@@ -272,6 +277,9 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			if (_reformatting)
 				return;
 
+			//Undo/Redo
+            SaveState();
+
 			var changedParas = new List<Paragraph>();
 
 			foreach (var change in e.Changes.Where(c => c.AddedLength > 0))
@@ -285,8 +293,6 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 				changedParas.AddRange(GetParagraphsBetweenPositions(start, end));
 			}
 
-			//Undo/Redo
-			undoStack.Push(Document);
 
 			// Now let's reformat a subset of them
 			// We'll do our filtering with LINQ's WHERE clause
@@ -427,6 +433,8 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// <param name="p">Selected paragraph containing beginning HTML element tag </param>
 		public void CollapseParagraph(object sender, RoutedEventArgs e)
 		{
+            _reformatting = true;
+
 			var p = CaretPosition.Paragraph;
 
 			//Console.WriteLine(HtmlParser.GetOpeningTag(new TextRange(p.ContentStart, p.ContentEnd).Text));
@@ -449,6 +457,13 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 			{
 				// create placeholder paragraph
 				var tag = HtmlParser.GetOpeningTag(new TextRange(p.ContentStart, p.ContentEnd).Text);
+
+                if (string.IsNullOrWhiteSpace(tag))
+                {
+                    _reformatting = false;
+                    return;
+                }
+
 				var placeholder = new Paragraph(new Run("<" + tag + ">...")
 				{
 					Foreground = Brushes.Gray
@@ -483,7 +498,18 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 
 				} while (openTagCount > 0 && currentPara != null);
 			}
+
+            SaveState();
+
+            _reformatting = false;
 		}
+
+        private void SaveState()
+        {
+            undoStack.Push(Document.Serialize());
+
+            redoStack.Clear();
+        }
 
 		/// <summary>
 		/// Undoes the most recent undo command. In other words, undoes the most recent undo unit on the undo stack.
@@ -493,7 +519,17 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// </returns>
 		public new bool Undo()
 		{
-			// TODO: 
+            _reformatting = true;
+
+            if (!undoStack.Any())
+                return false;
+
+            redoStack.Push(this.Document.Serialize());
+
+            var d = (FlowDocument)undoStack.Pop().Deserialize();
+
+            this.Document = d;
+            _reformatting = false;
 			return true;
 		}
 
@@ -505,8 +541,30 @@ namespace HtmlEditor.CodeEditors.PlainEditor
 		/// </returns>
 		public new bool Redo()
 		{
-			// TODO:
+            _reformatting = true;
+
+            if (!redoStack.Any())
+                return false;
+
+            undoStack.Push(this.Document.Serialize());
+            this.Document = (FlowDocument)redoStack.Pop().Deserialize();
+            _reformatting = false;
 			return true;
 		}
 	}
+
+    public static class Serializer
+    {
+        public static string Serialize(this object o)
+        {
+            return (string)XamlWriter.Save(o);
+        }
+        public static object Deserialize(this string o)
+        {
+            StringReader stringReader = new StringReader(o);
+            XmlReader xmlReader = XmlReader.Create(stringReader);
+
+            return XamlReader.Load(xmlReader);
+        }
+    }
 }

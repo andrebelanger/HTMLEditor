@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace HtmlEditor
@@ -6,17 +7,13 @@ namespace HtmlEditor
     /// <summary>
     /// Interaction logic for InsertTableWindow.xaml
     /// </summary>
-    public partial class InsertTableWindow : Window
+    public partial class InsertTableWindow : InsertWindow
     {
-        private readonly HtmlEditorWindow _editorWindow;
         private const int MinSize = 1;
         private const int MaxSize = 99;
 
-        public InsertTableWindow(HtmlEditorWindow editorWindow)
+        public InsertTableWindow()
         {
-	        Owner = editorWindow;
-            _editorWindow = editorWindow;
-
             InitializeComponent();
         }
 
@@ -37,7 +34,21 @@ namespace HtmlEditor
 					throw new FormatException(string.Format("Number provided was out of the allowed range ({0}-{1})", MinSize, MaxSize));
                 }
 
-                _editorWindow.InsertTable(rows, columns);
+                var table = new List<string> { "<table>" };
+
+
+                for (var i = 0; i < rows; i++)
+                {
+                    table.Add("<tr>");
+                    for (var j = 0; j < columns; j++)
+                        table.Add("<td></td>");
+                    table.Add("</tr>");
+                }
+
+                table.Add("</table>");
+
+                Text = table;
+
 	            Close();
             }
             catch (Exception ex)
